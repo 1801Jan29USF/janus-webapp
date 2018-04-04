@@ -7,7 +7,7 @@ import { HydraTrainee } from '../../entities/HydraTrainee';
 import { UrlService } from '../urls/url.service';
 import { environment } from '../../../../environments/environment';
 
-describe('HydraTraineeService', () => {
+fdescribe('HydraTraineeService', () => {
   const trainee = new HydraTrainee();
   this.context = environment.hydraContext;
   beforeEach(() => {

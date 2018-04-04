@@ -46,7 +46,6 @@ export class TrainersComponent implements OnInit {
     this.trainerService.fetchRoles().subscribe(res => {
       this.roles = (res.filter(role => role !== 'INACTIVE')); // filter out INACTIVE role
     });
-    console.log(this.roles);
     this.initFormControl();
   }
 
@@ -156,9 +155,9 @@ export class TrainersComponent implements OnInit {
     // call trainerService to update
     this.trainerService.update(temp).subscribe((resp) => {
       this.currEditTrainer = temp;
-      this.trainerService.fetchAll();
+      this.ngOnInit();
     });
-    this.ngOnInit();
+
   }
   /**
    * get the cause for modal dismissal

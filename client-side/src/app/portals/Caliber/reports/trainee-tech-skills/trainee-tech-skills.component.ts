@@ -15,7 +15,7 @@ import { HydraTrainee } from '../../../../hydra-client/entities/HydraTrainee';
   templateUrl: './trainee-tech-skills.component.html',
   styleUrls: ['./trainee-tech-skills.component.css']
 })
-export class TraineeTechSkillsComponent implements OnInit, OnDestroy {
+export class TraineeTechSkillsComponent implements OnInit {
 
 
   private batchOverallSubscription: Subscription;
@@ -168,17 +168,7 @@ export class TraineeTechSkillsComponent implements OnInit, OnDestroy {
       );
   }
 
-  ngOnDestroy() {
-    this.batchOverallSubscription.unsubscribe();
-    this.traineeOverallRadar.unsubscribe();
-    this.traineeWeeklyRadar.unsubscribe();
-    this.weekBatchFilter.unsubscribe();
-    this.granularity.unsubscribe();
 
-    this.batchSubscription.unsubscribe();
-    this.weekSubscription.unsubscribe();
-    this.traineeSubscription.unsubscribe();
-  }
   /**
    * general set up would go here.
    */

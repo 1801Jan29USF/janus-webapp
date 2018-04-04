@@ -41,14 +41,14 @@
                 <th></th>
                 <th></th>
                 <th></th>
-                <tr *ngFor='let batch of batches | batchByTrainer: currentTrainer.name'>
+                <tr *ngFor='let batch of batches'>
                     <td>{{batch.trainingName}}</td>
                     <td>{{batch.trainingType}}</td>
                     <td>{{batch.skillType}}</td>
                     <td>{{batch.conTrainer}}</td>
-                    <td>{{batch.address.city}}, {{batch.address.state}}</td>
-                    <td>{{batch.startDate}}</td>
-                    <td>{{batch.endDate}}</td>
+                    <td>{{batch.location}}</td>
+                    <td>{{batch.startDate | date:'shortDate'}}</td>
+                    <td>{{batch.endDate | date:'shortDate'}}</td>
                     <td>
                         <i class="fa fa-users" style="color:#ff8e4d;" aria-hidden="true" (click)="setCurrentBatch(batch); openLarge(showBatch)"></i>
                     </td>
@@ -145,13 +145,15 @@
     <div class="modal-body modal-lg">
         <div id="trainers-table">
             <table class="table table-hover">
-                <th>Name</th>
+                <th>First Name</th>
+                <th>Last Name</th>
                 <th>Email</th>
                 <th>Phone Number</th>
                 <th>Training Status</th>
                 <tr *ngFor='let trainee of currentBatch.trainees'>
-                    <td>{{trainee.name}}</td>
-                    <td>{{trainee.email}}</td>
+                    <td>{{trainee.traineeUserInfo.firstName}}</td>
+                    <td>{{trainee.traineeUserInfo.lastName}}</td>
+                    <td>{{trainee.traineeUserInfo.email}}</td>
                     <td>{{trainee.phoneNumber}}</td>
                     <td>{{trainee.trainingStatus}}</td>
                 </tr>

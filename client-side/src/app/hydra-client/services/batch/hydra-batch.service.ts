@@ -19,12 +19,14 @@ import { HydraBatch } from '../../entities/HydraBatch';
 import { HydraCRUD } from '../../interfaces/api.interface';
 
 
+
 /**
  * this service manages calls to the web service
  * for Batch objects
  */
 @Injectable()
 export class HydraBatchService implements HydraCRUD<HydraBatch> {
+
 
 
   constructor(public http: HttpClient, private urls: UrlService) {
@@ -51,7 +53,7 @@ export class HydraBatchService implements HydraCRUD<HydraBatch> {
    * @returns Observable
    */
   public fetchAll() {
-    return this.http.get<any[]>(this.urls.batches.fetchAll());
+    return this.http.get<HydraBatch[]>(this.urls.batches.fetchAll());
   }
 
   /**

@@ -1,5 +1,5 @@
-///////Commented out in order to run hydra-batch.service.spec.ts
-//////(Address is not recognized in Batch Entity)
+/////// Commented out in order to run hydra-batch.service.spec.ts
+////// (Address is not recognized in Batch Entity)
 
 // import { async, ComponentFixture, TestBed, tick, fakeAsync, inject } from '@angular/core/testing';
 

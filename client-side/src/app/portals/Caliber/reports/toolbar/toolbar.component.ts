@@ -16,6 +16,7 @@ import { HydraBatch } from '../../../../hydra-client/entities/HydraBatch';
 import { HydraBatchService } from '../../../../hydra-client/services/batch/hydra-batch.service';
 import { HydraBatchUtilService } from '../../../../services/hydra-batch-util.service';
 import { HydraTrainee } from '../../../../hydra-client/entities/HydraTrainee';
+import { HydraTraineeService } from '../../../../hydra-client/services/trainee/hydra-trainee.service';
 
 @Component({
   selector: 'app-toolbar',
@@ -33,6 +34,7 @@ export class ToolbarComponent implements OnInit {
   // Current batch and trainee Object based on selection
   currentBatch: HydraBatch = new HydraBatch();
   currentTrainee: HydraTrainee;
+  currentBatchTrainees: Array<HydraTrainee>;
 
   // Arrays
   public yearList: Array<number>;              // Contains list of all years from batches
@@ -46,7 +48,7 @@ export class ToolbarComponent implements OnInit {
   private batchSubscription: Subscription;
   private trainerSubscription: Subscription;
 
-  constructor(private batchService: HydraBatchService,
+  constructor(private batchService: HydraBatchService, private traineeService: HydraTraineeService,
               private granularityService: GranularityService,
               private pdfService: PDFService, private batchUtil: HydraBatchUtilService) {
   }
@@ -69,6 +71,7 @@ export class ToolbarComponent implements OnInit {
         this.createBatchDropdown();
         this.batchSelect = this.batchYearList[0].batchId;
         this.currentBatch = this.getBatchByIdFromSelection(this.batchSelect);
+
 
         // Generate dropdown information for weeks and set initial values
         this.createWeeksDropdown();
@@ -168,10 +171,18 @@ export class ToolbarComponent implements OnInit {
     this.traineesList = [];
     this.traineesListNames = [];
 
-    for (const trainee of this.currentBatch.trainees) {
-      this.traineesList.push(trainee);
-      this.traineesListNames.push(trainee.traineeUserInfo.firstName);
+    this.traineeService.findAllByBatchAndStatus(this.currentBatch.batchId, 'Training').subscribe
+    ( res => {
+      this.currentBatch.trainees = res;
+    console.log('current batch is ', this.currentBatch);
+    console.log('trainees is ', typeof(this.currentBatch.trainees));
+
+
+    for (let i = 0; i < this.currentBatch.trainees.length; i++) {
+      this.traineesList.push(this.currentBatch.trainees[i]);
+      this.traineesListNames.push(this.currentBatch.trainees[i].traineeUserInfo.firstName);
     }
+  });
 
     this.traineeSelect = 0;
     this.sortTraineesByName();

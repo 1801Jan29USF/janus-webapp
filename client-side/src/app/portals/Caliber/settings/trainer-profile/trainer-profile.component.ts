@@ -5,12 +5,15 @@ import { Observable } from 'rxjs/Observable';
 import { NgbModal, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
 import { Router } from '@angular/router';
 
-import { Batch } from '../../entities/Batch';
 
-import { BatchService } from '../../services/batch.service';
+
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { TrainerService } from '../../../../hydra-client/services/trainer/trainer.service';
 import { HydraTrainer } from '../../../../hydra-client/entities/HydraTrainer';
+import { HydraBatchService } from '../../../../hydra-client/services/batch/hydra-batch.service';
+import { HydraBatch } from '../../../../hydra-client/entities/HydraBatch';
+import { HydraTrainee } from '../../../../hydra-client/entities/HydraTrainee';
+import { HydraTraineeService } from '../../../../hydra-client/services/trainee/hydra-trainee.service';
 
 @Component({
   selector: 'app-trainer-profile',
@@ -24,8 +27,9 @@ export class TrainerProfilesComponent implements OnInit {
   * current trainer and their batch
   */
   currentTrainer: HydraTrainer;
-  batches: Array<Batch>;
-  currentBatch: Batch;
+  batches: Array<HydraBatch>;
+  currentBatch: HydraBatch;
+  currentBatchTrainees: Array<HydraTrainee>;
 
   /**
   * create variables for subscribing and trainers
@@ -41,30 +45,34 @@ export class TrainerProfilesComponent implements OnInit {
   rForm: FormGroup;
 
   constructor(private trainerService: TrainerService, private modalService: NgbModal,
-    private batchService: BatchService, private router: Router, private fb: FormBuilder) { }
+    private batchService: HydraBatchService, private router: Router,
+     private fb: FormBuilder, private traineeService: HydraTraineeService) { }
 
   ngOnInit() {
-  /**
-  * gets the current trainer for the page from trainer service's current trainer
-  * if the current trainer is null navigate back to the trainers page so that the user can select one
-  */
+    /**
+    * gets the current trainer for the page from trainer service's current trainer
+    * if the current trainer is null navigate back to the trainers page so that the user can select one
+    */
     // this.trainerService.currentTrainer.subscribe(currentTrainer => this.currentTrainer = currentTrainer);
     this.currentTrainer = this.trainerService.currentTrainer;
     if (this.currentTrainer == null) {
       this.router.navigate(['Caliber/settings/trainers']);
     }
 
-  /**
-  * fetches all batches and pushes into the batches object,
-  */
-    this.batchService.fetchAll();
-    this.batchService.getList().subscribe(
-      (batches: Batch[]) => { this.batches = batches; }
+    /**
+    * fetches all batches and pushes into the batches object,
+    */
+    // this.batchService.fetchAll().subscribe(
+    //   (batches: Batch[]) => { this.batches = batches; }
+    // );
+
+    this.batchService.fetchAllByTrainerId(this.currentTrainer.trainerId).subscribe(
+      (batches: HydraBatch[]) => { this.batches = batches; }
     );
 
-  /**
-  * fetches all trainers, titles and roles and pushes them onto the trainers, titles and roles observables
-  */
+    /**
+    * fetches all trainers, titles and roles and pushes them onto the trainers, titles and roles observables
+    */
     this.trainerService.fetchAll().subscribe((resp) => {
       this.trainers = resp;
     });
@@ -100,6 +108,10 @@ export class TrainerProfilesComponent implements OnInit {
   */
   setCurrentBatch(batch) {
     this.currentBatch = batch;
+    this.traineeService.findAllByBatchAndStatus(batch.batchId, 'Training').subscribe( res =>
+      this.currentBatch.trainees = res
+    );
+    console.log(batch);
   }
 
   /**
