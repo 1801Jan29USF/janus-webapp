@@ -106,29 +106,6 @@
 
   </div>
 
-  <div class="row">
-
-    <div class="form-group col-md-6 col-sm-6">
-      <label for="goodGrade">
-        <strong>Good Grade:</strong>
-        <span title="The minimum acceptable grade." alt="The minimum acceptable grade." class="glyphicon glyphicon-question-sign"></span>
-      </label>
-      <input [(ngModel)]="batch.goodGradeThreshold" ng-change="setMinGrade()" type="number" min="0" step="1" class="form-control"
-        id="goodGrade" placeholder="80" ng-required="true">
-    </div>
-
-    <div class="form-group col-md-6 col-sm-6">
-      <label for="borderlineGrade">
-        <strong>Passing Grade:</strong>
-        <span title="The minimum grade required to pass. Falling below this grade will likely result in disciplinary action." alt="The minimum grade required to pass. Falling below this grade will likely result in disciplinary action."
-          class="glyphicon glyphicon-question-sign"></span>
-      </label>
-      <input [(ngModel)]="batch.borderlineGradeThreshold" ng-change="lowerMinGrade()" type="number" min="0" step="1" class="form-control"
-        id="borderlineGrade" placeholder="50" ng-required="true">
-    </div>
-
-  </div>
-
 </div>
 
 

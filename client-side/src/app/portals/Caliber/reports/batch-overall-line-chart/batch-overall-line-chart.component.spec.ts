@@ -3,7 +3,7 @@ import { Dependencies } from '../../caliber.test.module';
 
 import { BatchOverallLineChartComponent } from './batch-overall-line-chart.component';
 
-describe('BatchOverallLineChartComponent', () => {
+xdescribe('BatchOverallLineChartComponent', () => {
   let component: BatchOverallLineChartComponent;
   let fixture: ComponentFixture<BatchOverallLineChartComponent>;
 

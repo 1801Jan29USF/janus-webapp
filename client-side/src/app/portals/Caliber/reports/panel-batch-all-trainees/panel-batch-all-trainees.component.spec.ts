@@ -3,7 +3,7 @@ import { Dependencies } from '../../caliber.test.module';
 import { PanelBatchAllTraineesComponent } from './panel-batch-all-trainees.component';
 
 
-describe('PanelBatchAllTraineesComponent', () => {
+xdescribe('PanelBatchAllTraineesComponent', () => {
   let component: PanelBatchAllTraineesComponent;
   let fixture: ComponentFixture<PanelBatchAllTraineesComponent>;
 

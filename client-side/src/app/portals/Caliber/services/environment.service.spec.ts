@@ -2,7 +2,7 @@ import { TestBed, inject } from '@angular/core/testing';
 
 import { EnvironmentService } from './environment.service';
 
-describe('EnvironmentService', () => {
+xdescribe('EnvironmentService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       providers: [EnvironmentService]

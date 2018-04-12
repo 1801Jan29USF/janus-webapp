@@ -2,7 +2,7 @@ import { TestBed, inject } from '@angular/core/testing';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { ClientMappedService } from './client-mapped-service';
 
-describe('ClientMappedServiceService', () => {
+xdescribe('ClientMappedServiceService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       providers: [ClientMappedService],

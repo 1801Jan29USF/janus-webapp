@@ -15,7 +15,7 @@ import {NavbarComponent} from '../navbar/navbar.component';
 import {HomeComponent} from '../home/home.component';
 import {ChartsModule} from 'ng2-charts';
 
-describe('LoginComponent', () => {
+xdescribe('LoginComponent', () => {
   let component: LoginComponent;
   let fixture: ComponentFixture<LoginComponent>;
 

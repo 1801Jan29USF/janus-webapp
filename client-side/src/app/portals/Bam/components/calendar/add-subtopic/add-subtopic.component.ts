@@ -328,6 +328,7 @@ export class AddSubtopicComponent implements OnInit {
    * @author Sean Sung | Batch: 1712-dec10-java-steve
    */
   selectSubtopic(subtopic: string) {
+    // WHY ARE WE USING JQUERY??? FIX THIS
     if (selectedSubtopic !== undefined) {
       $(selectedSubtopic).css('opacity', 1);
     }
@@ -341,7 +342,6 @@ export class AddSubtopicComponent implements OnInit {
   /**
    * Returns the SubtopicName object associated with the subtopic name
    * Returns null if it cannot find it.
-   *
    * @param subtopic
    * @author Sean Sung | Batch: 1712-dec10-java-steve
    */
@@ -372,6 +372,7 @@ export class AddSubtopicComponent implements OnInit {
     );
 
     // attach data to draggable element
+    // -Blake - Why are we using jquery?
     $(event.target).data('subtopic', subtopicData);
     // set draggable
     $(event.target).draggable(

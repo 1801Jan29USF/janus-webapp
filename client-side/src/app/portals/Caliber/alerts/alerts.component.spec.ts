@@ -5,7 +5,7 @@ import { SimpleNotificationsModule } from 'angular2-notifications-lite/src/simpl
 import { AlertsService } from '../services/alerts.service';
 import { NotificationsService } from 'angular2-notifications-lite/src/notifications.service';
 
-describe('AlertsComponent', () => {
+xdescribe('AlertsComponent', () => {
   let component: AlertsComponent;
   let fixture: ComponentFixture<AlertsComponent>;
   // let alertService: ComponentFixture<AlertsComponent>;

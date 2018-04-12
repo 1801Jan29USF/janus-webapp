@@ -7,7 +7,7 @@ import { PanelService } from '../../services/panel.service';
 import { HttpClientModule } from '@angular/common/http';
 import { AlertsService } from '../../services/alerts.service';
 
-describe('PanelFeedbackComponent', () => {
+xdescribe('PanelFeedbackComponent', () => {
   let component: PanelFeedbackComponent;
   let fixture: ComponentFixture<PanelFeedbackComponent>;
 

@@ -3,7 +3,7 @@ import { Dependencies } from '../../caliber.test.module';
 import { OverallFeedbackComponent } from './overall-feedback.component';
 
 
-describe('OverallFeedbackComponent439y298743', () => {
+xdescribe('OverallFeedbackComponent439y298743', () => {
   let component: OverallFeedbackComponent;
   let fixture: ComponentFixture<OverallFeedbackComponent>;
 

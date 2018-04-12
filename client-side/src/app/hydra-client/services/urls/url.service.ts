@@ -1,6 +1,11 @@
 import { Injectable, Inject } from '@angular/core';
 import { environment } from '../../../../environments/environment';
-
+/**
+ * This Class servers the purpose of providing the other services with the appropriate urls for consuming hydra.
+ *
+ * @export
+ * @class UrlService
+ */
 @Injectable()
 export class UrlService {
   private context: string;

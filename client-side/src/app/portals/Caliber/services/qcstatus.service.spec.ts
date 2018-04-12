@@ -3,7 +3,7 @@ import { QCStatusService } from './qcstatus.service';
 import { Dependencies } from '../caliber.test.module';
 
 
-describe('QCStatusService', () => {
+xdescribe('QCStatusService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule(Dependencies);
   });

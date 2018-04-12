@@ -12,7 +12,7 @@ import { VpPanelGraphComponent } from './vp-panel-graph.component';
 import { HomeComponent } from '../../../Assign-Force/home/home.component';
 // import { ReportingService } from '../../../services/reporting.service';
 
-describe('VpPanelGraphComponent', () => {
+xdescribe('VpPanelGraphComponent', () => {
   let component: VpPanelGraphComponent;
   let fixture: ComponentFixture<VpPanelGraphComponent>;
 

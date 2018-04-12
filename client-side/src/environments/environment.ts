@@ -7,7 +7,8 @@ const bam = 'http://18.219.59.193:9001/api/v2';
 export const environment = {
   production: false,
 
-  hydraContext: 'http://10.226.124.149:8765/',
+  hydraContext: 'http://localhost:8765/',
+
 
   context: context, // change for what the production environment would actually be
   bam: bam,
@@ -196,16 +197,16 @@ export const environment = {
 
   /** BAM Specific Endpoints */
   bambatch: {
-        getBatchAllUrl: () => `${bam}/batches/all`,
-        getPastBatchesUrl: (email: string) => `${bam}/batches/past/${email}/`,
-        getFutureBatchesUrl: (email: string) => `${bam}/batches/future/${email}/`,
-        getBatchInProgressUrl: (email: string) => `${bam}/batches/inprogress/${email}/`,
-        getAllBatchesInProgressUrl: (email: string) => `${bam}/batches/allinprogress/${email}/`,
-        getBatchByIdURL: (batchId: number) => `${bam}/batches/byid/${batchId}/`,
-        updateBatchUrl: () => `${bam}/batches/updatebatch`,
-        getAllBatchTypesUrl: () => `${bam}/batches/batchtypes`,
-        removeSubtopicFromBatchUrl: (subtopicId: number) => `${bam}/batches/${subtopicId}`,
-        getAllInProgressUrl: () => `${bam}/batches/currentbatches`
+        getBatchAllUrl: () => `${bam}/batch/all`,
+        getPastBatchesUrl: (email: string) => `${bam}/batch/past/${email}/`,
+        getFutureBatchesUrl: (email: string) => `${bam}/batch/future/${email}/`,
+        getBatchInProgressUrl: (email: string) => `${bam}/batch/inprogress/${email}/`,
+        getAllBatchesInProgressUrl: (email: string) => `${bam}/batch/allinprogress/${email}/`,
+        getBatchByIdURL: (batchId: number) => `${bam}/batch/byid/${batchId}/`,
+        updateBatchUrl: () => `${bam}/batch/updatebatch`,
+        getAllBatchTypesUrl: () => `${bam}/batch/batchtypes`,
+        removeSubtopicFromBatchUrl: (subtopicId: number) => `${bam}/batch/${subtopicId}`,
+        getAllInProgressUrl: () => `${bam}/batch/currentbatches`
     },
 
     curriculum: {
@@ -238,18 +239,18 @@ export const environment = {
     },
 
     users: {
-        getAllUsersUrl: () => `${bam}/users/all`,
-        getAllTrainersUrl: () => `${bam}/users/alltrainers`,
-        getAllAssociatesUrl: () => `${bam}/users/allassociates`,
-        getUsersInBatchUrl: (batchId: number) => `${bam}/users/inbatch/${batchId}`,
-        dropUserFromBatchUrl: (userId: number) => `${bam}/users/drop/${userId}`,
-        updateUserUrl: () => `${bam}/users/update`,
-        addUserUrl: () => `${bam}/users/register`,
-        resetPasswordUrl: () => `${bam}/users/reset`,
-        removeUserUrl: (userId: number) => `${bam}/users/remove/${userId}`,
-        addUserToBatchUrl: (batchId: number, userId: number) => `${bam}/users/add/${userId}/${batchId}`,
-        getUsersNotInBatchUrl: () => `${bam}/users/notinabatch`,
-        recoverPasswordUrl: () => `${bam}/users/recovery`
+        getAllUsersUrl: () => `${bam}/user/all`,
+        getAllTrainersUrl: () => `${bam}/user/alltrainers`,
+        getAllAssociatesUrl: () => `${bam}/user/allassociates`,
+        getUsersInBatchUrl: (batchId: number) => `${bam}/user/inbatch/${batchId}`,
+        dropUserFromBatchUrl: (userId: number) => `${bam}/user/drop/${userId}`,
+        updateUserUrl: () => `${bam}/user/update`,
+        addUserUrl: () => `${bam}/user/register`,
+        resetPasswordUrl: () => `${bam}/user/reset`,
+        removeUserUrl: (userId: number) => `${bam}/user/remove/${userId}`,
+        addUserToBatchUrl: (batchId: number, userId: number) => `${bam}/user/add/${userId}/${batchId}`,
+        getUsersNotInBatchUrl: () => `${bam}/user/notinabatch`,
+        recoverPasswordUrl: () => `${bam}/user/recovery`
     },
 
     topic: {

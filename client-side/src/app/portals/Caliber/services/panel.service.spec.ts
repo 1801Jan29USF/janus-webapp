@@ -3,7 +3,7 @@ import { HttpClientModule, HttpClient} from '@angular/common/http';
 import { ApiService } from '../util/api.service';
 import { PanelService } from './panel.service';
 
-describe('PanelService', () => {
+xdescribe('PanelService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [ HttpClientModule ],

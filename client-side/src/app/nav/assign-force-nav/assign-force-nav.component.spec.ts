@@ -3,5 +3,5 @@ import { AssignForceNavComponent } from './assign-force-nav.component';
 
 
 
-describe('AssignForceNavComponent', () => {
+xdescribe('AssignForceNavComponent', () => {
 });

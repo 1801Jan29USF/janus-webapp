@@ -3,7 +3,7 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { Dependencies } from '../../caliber.test.module';
 import { QcDoughnutComponent } from './qc-doughnut.component';
 
-describe('QcDoughnutComponent', () => {
+xdescribe('QcDoughnutComponent', () => {
   let component: QcDoughnutComponent;
   let fixture: ComponentFixture<QcDoughnutComponent>;
 

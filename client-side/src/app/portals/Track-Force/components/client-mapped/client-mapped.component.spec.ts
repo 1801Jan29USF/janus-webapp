@@ -15,7 +15,7 @@ import { User } from '../../models/user.model';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/observable/of';
 
-describe('ClientMappedComponent', () => {
+xdescribe('ClientMappedComponent', () => {
   let component: ClientMappedComponent;
   let fixture: ComponentFixture<ClientMappedComponent>;
   const testClientMappedService: ClientMappedService = new ClientMappedService(null);

@@ -3,7 +3,7 @@ import { NgbModal, NgbActiveModal, NgbModule} from '@ng-bootstrap/ng-bootstrap';
 import { DeleteBatchModalComponent } from './delete-batch-modal.component';
 import { Dependencies } from '../../caliber.test.module';
 
-describe('DeleteBatchModalComponent', () => {
+xdescribe('DeleteBatchModalComponent', () => {
   let component: DeleteBatchModalComponent;
   let fixture: ComponentFixture<DeleteBatchModalComponent>;
 

@@ -8,6 +8,11 @@ import { UrlService } from './services/urls/url.service';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { HydraInterceptor } from './interceptors/hydra.interceptor';
 
+// export const CONTEXT_CONFIG = new InjectionToken('test');
+
+// export const urlServiceFactory = function(context: string) {
+//   return new UrlService(context);
+// };
 
 @NgModule({
   imports: [

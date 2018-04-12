@@ -2,7 +2,7 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { CreatePanelComponent } from './create-panel.component';
 import { Dependencies } from '../../caliber.test.module';
 
-describe('CreatePanelComponent', () => {
+xdescribe('CreatePanelComponent', () => {
   let component: CreatePanelComponent;
   let fixture: ComponentFixture<CreatePanelComponent>;
 

@@ -12,7 +12,12 @@ import { HomeComponent } from '../home/home.component';
 import {AuthenticationService} from '../../services/authentication-service/authentication.service';
 import {RequestService} from '../../services/request-service/request.service';
 
+<<<<<<< HEAD
 describe('ClientListComponent', () => {
+=======
+xdescribe('ClientListComponent', () => {
+  let component: ClientListComponent;
+>>>>>>> master
   let fixture: ComponentFixture<ClientListComponent>;
 
   beforeEach(async(() => {

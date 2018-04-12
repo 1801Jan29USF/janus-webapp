@@ -7,7 +7,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { AlertsService } from '../../../services/alerts.service';
 
 
-describe('ReactivateLocationComponent', () => {
+xdescribe('ReactivateLocationComponent', () => {
     let component: ReactivateLocationComponent;
     let fixture: ComponentFixture<ReactivateLocationComponent>;
 

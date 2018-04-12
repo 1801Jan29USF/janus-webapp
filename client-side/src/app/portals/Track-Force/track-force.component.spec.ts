@@ -1,4 +1,4 @@
 import { TestBed, async } from '@angular/core/testing';
-describe('TrackForceComponent', () => {
+xdescribe('TrackForceComponent', () => {
 
 });

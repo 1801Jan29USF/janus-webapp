@@ -3,7 +3,7 @@ import { Dependencies } from '../../caliber.test.module';
 import { TrainerProfilesComponent } from './trainer-profile.component';
 
 
-describe('TrainerProfilesComponent', () => {
+xdescribe('TrainerProfilesComponent', () => {
   let component: TrainerProfilesComponent;
   let fixture: ComponentFixture<TrainerProfilesComponent>;
 

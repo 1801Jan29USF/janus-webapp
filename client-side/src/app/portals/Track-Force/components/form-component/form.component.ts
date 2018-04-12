@@ -12,7 +12,7 @@ import { RequestService } from '../../services/request-service/request.service';
  * Component for viewing an individual associate and editing as admin.
  */
 @Component({
-    selector: 'form-comp',
+    selector: 'app-form-comp',
     templateUrl: './form.component.html',
     styleUrls: ['./form.component.css']
 })

@@ -2,7 +2,7 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { Dependencies } from '../../caliber.test.module';
 import { PanelOverallFeedbackComponent } from './panel-overall-feedback.component';
 
-describe('PanelOverallFeedbackComponent', () => {
+xdescribe('PanelOverallFeedbackComponent', () => {
   let component: PanelOverallFeedbackComponent;
   let fixture: ComponentFixture<PanelOverallFeedbackComponent>;
 

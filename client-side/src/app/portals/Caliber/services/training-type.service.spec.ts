@@ -3,7 +3,7 @@ import { HttpClientModule, HttpClient} from '@angular/common/http';
 
 import { TrainingTypeService } from './training-type.service';
 
-describe('TrainingTypeService', () => {
+xdescribe('TrainingTypeService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientModule],

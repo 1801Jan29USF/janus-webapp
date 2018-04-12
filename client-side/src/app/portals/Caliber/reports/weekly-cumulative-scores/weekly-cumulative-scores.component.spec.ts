@@ -4,7 +4,7 @@ import { WeeklyCumulativeScoreComponent } from './weekly-cumulative-scores.compo
 import { Dependencies } from '../../caliber.test.module';
 
 
-describe('WeeklyCumulativeScoreComponent', () => {
+xdescribe('WeeklyCumulativeScoreComponent', () => {
   let component: WeeklyCumulativeScoreComponent;
   let fixture: ComponentFixture<WeeklyCumulativeScoreComponent>;
 
