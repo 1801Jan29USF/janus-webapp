@@ -15,6 +15,9 @@ import { UrlService } from '../urls/url.service';
 @Injectable()
 export class TrainerService {
 
+  /**
+   * This probably shouldn't be here - from blake
+   */
   public currentTrainer = new HydraTrainer;
 
   constructor(private httpClient: HttpClient, private urls: UrlService) { }

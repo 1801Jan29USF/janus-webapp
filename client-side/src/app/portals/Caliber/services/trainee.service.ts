@@ -35,6 +35,8 @@ export class TraineeService implements CRUD<Trainee> {
     this.savedSubject = new Subject();
     this.updatedSubject = new Subject();
     this.deletedSubject = new Subject();
+
+    console.log('trainer service started');
    }
 
 

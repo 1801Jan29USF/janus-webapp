@@ -44,7 +44,6 @@ import { QCStatusService } from './services/qcstatus.service';
 import { TraineeStatusService } from './services/trainee-status.service';
 import { PDFService } from './services/pdf.service';
 import { ReportingService } from './services/reporting.service';
-import { TrainerService } from '../../hydra-client/services/trainer/trainer.service';
 import { HydraTraineeService } from '../../hydra-client/services/trainee/hydra-trainee.service';
 
 // N.T.
@@ -122,6 +121,7 @@ import { DeleteBatchModalComponent } from './manage/delete-batch-modal/delete-ba
 import { CannotDeleteModalComponent } from './manage/cannot-delete-modal/cannot-delete-modal.component';
 import { DeleteTraineeModalComponent } from './manage/delete-trainee-modal/delete-trainee-modal.component';
 import { CannotDeleteTraineeModalComponent } from './manage/cannot-delete-trainee-modal/cannot-delete-trainee-modal.component';
+import { TrainerService } from './services/trainer.service';
 
 
 
