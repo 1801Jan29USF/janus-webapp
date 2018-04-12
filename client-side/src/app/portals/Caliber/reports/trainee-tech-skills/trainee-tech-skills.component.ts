@@ -5,8 +5,8 @@ import { ReportingService } from '../../services/reporting.service';
 import { PDFService } from '../../services/pdf.service';
 import { NgbModal, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
 import { GranularityService } from '../services/granularity.service';
-import { Trainee } from '../../entities/Trainee';
-import { Batch } from '../../entities/Batch';
+import { HydraBatch } from '../../../../hydra-client/entities/HydraBatch';
+import { HydraTrainee } from '../../../../hydra-client/entities/HydraTrainee';
 /**
  * @author John Hudson
 */
@@ -15,7 +15,7 @@ import { Batch } from '../../entities/Batch';
   templateUrl: './trainee-tech-skills.component.html',
   styleUrls: ['./trainee-tech-skills.component.css']
 })
-export class TraineeTechSkillsComponent implements OnInit, OnDestroy {
+export class TraineeTechSkillsComponent implements OnInit {
 
 
   private batchOverallSubscription: Subscription;
@@ -35,11 +35,11 @@ export class TraineeTechSkillsComponent implements OnInit, OnDestroy {
     private pdfService: PDFService, private modalService: NgbModal, private granularityService: GranularityService) { }
 
   // batch id of batch being viewed
-  public batch: Batch;
+  public batch: HydraBatch;
   // current week
   public week: Number = 0;
   // current trainee
-  public trainee: Trainee = new Trainee();
+  public trainee: HydraTrainee = new HydraTrainee();
   // list of trainees (id) that could be displayed
   public traineesList: number[] = [];
   // this is where trainee radar data is stored until it needs to be displayed
@@ -168,17 +168,7 @@ export class TraineeTechSkillsComponent implements OnInit, OnDestroy {
       );
   }
 
-  ngOnDestroy() {
-    this.batchOverallSubscription.unsubscribe();
-    this.traineeOverallRadar.unsubscribe();
-    this.traineeWeeklyRadar.unsubscribe();
-    this.weekBatchFilter.unsubscribe();
-    this.granularity.unsubscribe();
 
-    this.batchSubscription.unsubscribe();
-    this.weekSubscription.unsubscribe();
-    this.traineeSubscription.unsubscribe();
-  }
   /**
    * general set up would go here.
    */
@@ -214,7 +204,7 @@ export class TraineeTechSkillsComponent implements OnInit, OnDestroy {
     this.radarReset();
     for (let i = 0; i < this.batch.trainees.length; i++) {
       this.traineesList.push(this.batch.trainees[i].traineeId);
-      this.traineesNames[i] = this.batch.trainees[i].name;
+      this.traineesNames[i] = this.batch.trainees[i].traineeUserInfo.firstName;
     }
 
     this.reportsService.fetchBatchOverallRadarChart(this.batch.batchId);
@@ -230,7 +220,7 @@ export class TraineeTechSkillsComponent implements OnInit, OnDestroy {
   weekSetup() {
     this.radarReset();
     if (this.batch.batchId) {
-      this.dataSetLabels.push(this.trainee.name);
+      this.dataSetLabels.push(this.trainee.traineeUserInfo.firstName);
 
       if (this.week === 0) {
         this.reportsService.fetchTraineeOverallRadarChart(this.trainee.traineeId);

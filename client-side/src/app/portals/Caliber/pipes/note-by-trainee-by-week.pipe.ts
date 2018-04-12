@@ -1,13 +1,13 @@
 import { Pipe, PipeTransform } from '@angular/core';
 import { Note } from '../entities/Note';
-import { Trainee } from '../entities/Trainee';
+import { HydraTrainee } from '../../../hydra-client/entities/HydraTrainee';
 
 @Pipe({
   name: 'noteByTraineeByWeek'
 })
 export class NoteByTraineeByWeekPipe implements PipeTransform {
 
-  transform(value: Note[], trainee: Trainee, week: number ): Note {
+  transform(value: Note[], trainee: HydraTrainee, week: number ): Note {
 
     const n = value.filter( (note) => {
 

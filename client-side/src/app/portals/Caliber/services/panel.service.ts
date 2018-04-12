@@ -11,12 +11,12 @@ import { Subject } from 'rxjs/Subject';
 import { Observable } from 'rxjs/Observable';
 
 // entities
-import { Trainee } from '../entities/Trainee';
 import { Panel } from '../entities/Panel';
 import { urls } from './urls';
 
 // Interfaces
 import { CRUD } from '../interfaces/api.interface';
+import { HydraTrainee } from '../../../hydra-client/entities/HydraTrainee';
 
 /**
 * this service manages calls to the web services
@@ -55,7 +55,7 @@ export class PanelService implements CRUD<Panel> {
    *
    * @param trainee: Trainee
    */
-  public fetchAllByTrainee(trainee: Trainee): Observable<Panel[]> {
+  public fetchAllByTrainee(trainee: HydraTrainee): Observable<Panel[]> {
     this.http.get<any[]>(urls.panel.fetchAllByTrainee(trainee.traineeId)).subscribe((results) => this.listSubject.next(results));
     return this.listSubject.asObservable();
   }

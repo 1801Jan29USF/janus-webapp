@@ -17,7 +17,6 @@ import { NavModule } from './nav/nav.module';
 import { JanusComponent } from './Janus/janus.component';
 import { ChuckNorrisService } from './services/chuck-norris.service';
 import { CategoriesService } from './portals/Caliber/services/categories.service';
-import { Trainer } from './entities/Trainer';
 
 import { CaliberModule } from './portals/Caliber/caliber.module';
 import { TraineeTechSkillsComponent } from './portals/Caliber/reports/trainee-tech-skills/trainee-tech-skills.component';
@@ -26,6 +25,7 @@ import { RoleGuard } from './role-guard';
 import { CookieService } from 'ngx-cookie-service';
 import { HydraClientModule } from './hydra-client/hydra-client.module';
 import { environment } from '../environments/environment';
+import { HydraBatchUtilService } from './services/hydra-batch-util.service';
 
 // loading routes from child modules this way will lazy load them
 const routes: Routes = [
@@ -66,7 +66,8 @@ const routes: Routes = [
   providers: [
     ChuckNorrisService,
     RoleGuard,
-    CookieService
+    CookieService,
+    HydraBatchUtilService
   ],
   bootstrap: [AppComponent]
 })

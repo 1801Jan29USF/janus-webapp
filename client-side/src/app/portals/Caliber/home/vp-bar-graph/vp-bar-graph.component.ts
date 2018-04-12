@@ -15,10 +15,10 @@ import { EvaluationService } from '../../services/evaluation.service';
 import { Note } from '../../entities/Note';
 import { DataSet } from '../../entities/DataSet';
 import { AlertsService } from '../../services/alerts.service';
-import { BatchService } from '../../services/batch.service';
 import { NoteService } from '../../services/note.service';
 import { ReportsService } from '../../services/reports.service';
 import { Observable } from 'rxjs/Observable';
+import { HydraBatchService } from '../../../../hydra-client/services/batch/hydra-batch.service';
 
 @Component({
   selector: 'app-vp-bar-graph',
@@ -57,7 +57,7 @@ export class VpBarGraphComponent implements OnInit, OnDestroy {
     private http: HttpClient,
     private alertService: AlertsService,
     private vpHomeSelectorService: VpHomeSelectorService,
-    private batchService: BatchService,
+    private batchService: HydraBatchService,
     private noteService: NoteService,
     private reportsService: ReportsService) { }
 
@@ -72,7 +72,7 @@ export class VpBarGraphComponent implements OnInit, OnDestroy {
     this.selectedState = false;
     this.barChartData = this.vpHomeBarGraphService.getBarChartData();
     const Observable1: Observable<any> = this.reportsService.fetchReportsStackedBarCurrentWeek();
-    const Observable2: Observable<any> = this.batchService.getList();
+    const Observable2: Observable<any> = this.batchService.fetchAll();
     this.mergedObservablesSubscription = Observable1.merge(Observable2).subscribe(
       (resp) => {
         this.counter++;

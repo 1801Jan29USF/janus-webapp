@@ -11,6 +11,6 @@ export class BatchByTrainerPipe implements PipeTransform {
      * @param trainerName
      */
     transform(batches: Batch[], trainerName: String): Batch[] {
-        return batches.filter( batch => batch.trainer.name === trainerName);
+        return batches.filter( batch => batch.trainer.firstName === trainerName);
     }
 }

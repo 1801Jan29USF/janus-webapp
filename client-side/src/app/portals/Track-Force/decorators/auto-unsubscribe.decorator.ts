@@ -19,7 +19,7 @@ export function AutoUnsubscribe( constructor ) {
         const property = this[ prop ];
         // if property exists and has-a unsubscribe...
         if ( property && (typeof property.unsubscribe === 'function') ) {
-          //...call it
+          // ...call it
           property.unsubscribe();
         }
       }

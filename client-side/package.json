@@ -8,6 +8,7 @@
     "build": "ng build --prod --env=prod",
     "build-uat": "ng build --prod --env=uat",
     "test": "ng test",
+    "hydra-test": "ng test --config.file=hydra.karma.conf.ts",
     "lint": "ng lint",
     "e2e": "ng e2e"
   },
@@ -46,6 +47,7 @@
     "ngx-cookie-service": "^1.0.10",
     "ngx-pagination": "^3.0.3",
     "ngx-scroll-event": "^1.0.7",
+    "npm": "^5.8.0",
     "popper.js": "^1.13.0",
     "primeng": "4.3.0",
     "rxjs": "5.5.2",

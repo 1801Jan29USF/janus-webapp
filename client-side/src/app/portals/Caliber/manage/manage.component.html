@@ -50,12 +50,6 @@
               Skill Type
             </th>
             <th>
-              Trainer
-            </th>
-            <th>
-              Co-Trainer
-            </th>
-            <th>
               Location
             </th>
             <th>
@@ -76,21 +70,21 @@
           </tr>
         </thead>
         <tbody>
-          <tr *ngFor="let batch of batches | DisplayBatchByYear:currentYear">
+          <tr *ngFor="let batch of batches">
+            <!-- | DisplayBatchByYear:currentYear -->
             <td>{{batch.trainingName}}</td>
             <td>{{batch.trainingType}}</td>
             <td>{{batch.skillType}}</td>
-            <td>{{batch.trainer.name}}</td>
-            <td></td>
-            <td>{{batch.address | addressToString }}</td>
+            <!-- <td>{{batch.trainer.name}}</td> -->
+            <td>{{batch.location}}</td>
             <td>{{batch.startDate | date:'MMM d, y'}}</td>
             <td>{{batch.endDate | date:'MMM d, y'}}</td>
-            <td>{{batch.goodGradeThreshold}}</td>
-            <td>{{batch.borderlineGradeThreshold}}</td>
+            <td>80</td>
+            <td>70</td>
             <td>
               <i class="fa fa-users c-pointer" style="color:#fa7427; text-align: center;" (click)="openViewBatchTraineesModal(traineesInBatch, batch)"
-                [title]="batch.trainees.length + ' Trainees'">
-                <span class="badge" style="text-align: center;">{{batch.trainees.length}}</span>
+                [title]=' Trainees'>
+                <!-- <span class="badge" style="text-align: center;">{{batch.trainees.length}}</span> -->
               </i>
             </td>
             <td>
@@ -121,245 +115,243 @@
         <label for="trainingName">Batch:</label>
         <select ng-model="trainingName.model" type="text" class="form-control" id="trainingName" placeholder="1611 Jul11 Java" ng-required="true">
           <!-- Not implemented yet: *ngFor needs to iterate through batches that can be imported -->
-          <option *ngFor="let batch of batches"></option>
-        </select>
-      </div>
-    </div>
-  </div>
-  <div class="modal-footer">
-    <input type="submit" value="Import" class="btn btn-primary" />
-    <button type="button" class="btn btn-default" (click)="c('Close click')">Close</button>
-  </div>
-</ng-template>
+          <option *ngFor="let batch of batches">
 
-<!-- Batch trainee modal
+
+      <div class="modal-footer">
+        <input type="submit" value="Import" class="btn btn-primary" />
+        <button type="button" class="btn btn-default" (click)="c('Close click')">Close</button>
+      </div>
+
+
+      <!-- Batch trainee modal
             shows table of trainees and their information by batch -->
-<div class="batch-trainee-modal-container" style="margin-left: 18px">
-  <ng-template #traineesInBatch let-c="close" let-d="dismiss">
-    <div class="bigmodal">
-      <!-- Modal Header I -->
-      <div class="modal-header" style="background-color:rgba(243, 243, 243, 0.918)">
-        <h4 class="modal-title" style="font-size:18px">View/Add Trainees</h4>
-        <button type="button" (click)="c('Close click')" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
+      <div class="batch-trainee-modal-container" style="margin-left: 18px">
+        <ng-template #traineesInBatch let-c="close" let-d="dismiss">
+          <div class="bigmodal">
+            <!-- Modal Header I -->
+            <div class="modal-header" style="background-color:rgba(243, 243, 243, 0.918)">
+              <h4 class="modal-title" style="font-size:18px">View/Add Trainees</h4>
+              <button type="button" (click)="c('Close click')" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
 
-      <!-- Modal Header II -->
-      <br>
-
-    
-        <div class="row" style="padding: 0px 20px">
-          <div class="col">
-            <h3 style="position: relative;top:10px;right:15px">Trainees in Batch</h3>
-          </div>
-          <div class="col shift-right">
-            <span style="position:relative;left:7px">Active</span>
+            <!-- Modal Header II -->
             <br>
-            <a role="button" (click)="switchTraineeView()" *ngIf="!showDropped">
-              <i class="fa fa-toggle-on fa-2x" style="color: #F26925" aria-hidden="true"></i>
-            </a>
-            <a role="button" (click)="switchTraineeView()" *ngIf="showDropped">
-              <i class="fa fa-toggle-off fa-2x" style="color: #F26925" aria-hidden="true"></i>
-            </a>
+
+
+            <div class="row" style="padding: 0px 20px">
+              <div class="col">
+                <h3 style="position: relative;top:10px;right:15px">Trainees in Batch</h3>
+              </div>
+              <div class="col shift-right">
+                <span style="position:relative;left:7px">Active</span>
+                <br>
+                <a role="button" (click)="switchTraineeView()" *ngIf="!showDropped">
+                  <i class="fa fa-toggle-on fa-2x" style="color: #F26925" aria-hidden="true"></i>
+                </a>
+                <a role="button" (click)="switchTraineeView()" *ngIf="showDropped">
+                  <i class="fa fa-toggle-off fa-2x" style="color: #F26925" aria-hidden="true"></i>
+                </a>
+              </div>
+            </div>
+
+
+            <hr>
+            <!-- Modal Header III -->
+            <div class="pull-right">
+              <div class="btn-group" role="group" id="addTrainee">
+                <button class="btn btn-secondary c-pointer" (click)="openCreateTraineeModal(createTrainee)" style="font-size: 14px">
+                  Add Trainee
+                  <i class="fa fa-plus" aria-hidden="true"></i>
+                </button>
+              </div>
+            </div>
+            <br>
+            <!-- <div class="col-md-12 col-lg-12"> -->
+            <div class="modal-body" style="margin-left: 15px">
+              <div class="col-md-12 col-lg-12">
+                <table class="table table-responsive">
+                  <thead>
+                    <tr>
+                      <th style="width:8%">Trainee Name</th>
+                      <th style="width:16%">Trainee Email</th>
+                      <th style="width:8%">Training Status</th>
+                      <th style="width:8%">Phone Number</th>
+                      <th>Skype Id</th>
+                      <th>Profile URL</th>
+                      <th>Recruiter Name</th>
+                      <th>College</th>
+                      <th>Degree</th>
+                      <th>Major</th>
+                      <th>Tech Screener</th>
+                      <th>Project Completion</th>
+                      <th></th>
+                      <th></th>
+                    </tr>
+                  </thead>
+                  <tbody *ngIf="!showDropped">
+                    <tr *ngFor="let trainee of currentBatch.trainees">
+                      <td>{{trainee.name}}</td>
+                      <td>{{trainee.email}}</td>
+                      <td>{{trainee.trainingStatus}}</td>
+                      <td>{{trainee.phoneNumber}}</td>
+                      <td>{{trainee.skypeId}}</td>
+                      <td>
+                        <a *ngIf="trainee.profileUrl" [href]="trainee.profileUrl" target="_blank">
+                          <i class="fa fa-file-code-o" style="color: #F26925" aria-hidden="true"></i>
+                        </a>
+                      </td>
+                      <td>{{trainee.recruiterName}}</td>
+                      <td>{{trainee.college}}</td>
+                      <td>{{trainee.degree}}</td>
+                      <td>{{trainee.major}}</td>
+                      <td>{{trainee.techScreenerName}}</td>
+                      <td>{{trainee.projectCompletion}}</td>
+                      <td>
+                        <i class="fa fa-pencil c-pointer" style="color:#fa7427 ;" aria-hidden="true" (click)="openUpdateTraineeModal(createTrainee, trainee)"></i>
+                      </td>
+                      <td>
+                        <i class="fa fa-times c-pointer" style="color:#fa7427 ;" aria-hidden="true" (click)="deleteTraineeFunction(trainee)"></i>
+                      </td>
+                    </tr>
+                  </tbody>
+
+                  <tbody *ngIf="showDropped">
+                    <tr *ngFor="let trainee of droppedTrainees">
+                      <td>{{trainee.name}}</td>
+                      <td>{{trainee.email}}</td>
+                      <td>{{trainee.trainingStatus}}</td>
+                      <td>{{trainee.phoneNumber}}</td>
+                      <td>{{trainee.skypeId}}</td>
+                      <td>
+                        <a *ngIf="trainee.profileUrl" [href]="trainee.profileUrl" target="_blank">
+                          <i class="fa fa-file-code-o" style="color: #F26925" aria-hidden="true"></i>
+                        </a>
+                      </td>
+                      <td>{{trainee.recruiterName}}</td>
+                      <td>{{trainee.college}}</td>
+                      <td>{{trainee.degree}}</td>
+                      <td>{{trainee.major}}</td>
+                      <td>{{trainee.techScreenerName}}</td>
+                      <td>{{trainee.projectCompletion}}</td>
+                      <td>
+                        <i class="fa fa-pencil c-pointer" style="color:#fa7427 ;" aria-hidden="true" (click)="openUpdateTraineeModal(createTrainee, trainee)"></i>
+                      </td>
+                      <td>
+                        <i class="fa fa-times c-pointer" style="color:#fa7427 ;" aria-hidden="true" (click)="deleteTraineeFunction(trainee)"></i>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
           </div>
-        </div>
-      
-
-      <hr>
-      <!-- Modal Header III -->
-      <div class="pull-right">
-        <div class="btn-group" role="group" id="addTrainee">
-          <button class="btn btn-secondary c-pointer" (click)="openCreateTraineeModal(createTrainee)" style="font-size: 14px">
-            Add Trainee
-            <i class="fa fa-plus" aria-hidden="true"></i>
-          </button>
-        </div>
-      </div>
-      <br>
-      <!-- <div class="col-md-12 col-lg-12"> -->
-      <div class="modal-body" style="margin-left: 15px">
-        <div class="col-md-12 col-lg-12">
-          <table class="table table-responsive">
-            <thead>
-              <tr>
-                <th style="width:8%">Trainee Name</th>
-                <th style="width:16%">Trainee Email</th>
-                <th style="width:8%">Training Status</th>
-                <th style="width:8%">Phone Number</th>
-                <th>Skype Id</th>
-                <th>Profile URL</th>
-                <th>Recruiter Name</th>
-                <th>College</th>
-                <th>Degree</th>
-                <th>Major</th>
-                <th>Tech Screener</th>
-                <th>Project Completion</th>
-                <th></th>
-                <th></th>
-              </tr>
-            </thead>
-            <tbody *ngIf="!showDropped">
-              <tr *ngFor="let trainee of currentBatch.trainees">
-                <td>{{trainee.name}}</td>
-                <td>{{trainee.email}}</td>
-                <td>{{trainee.trainingStatus}}</td>
-                <td>{{trainee.phoneNumber}}</td>
-                <td>{{trainee.skypeId}}</td>
-                <td>
-                  <a *ngIf="trainee.profileUrl" [href]="trainee.profileUrl" target="_blank">
-                    <i class="fa fa-file-code-o" style="color: #F26925" aria-hidden="true"></i>
-                  </a>
-                </td>
-                <td>{{trainee.recruiterName}}</td>
-                <td>{{trainee.college}}</td>
-                <td>{{trainee.degree}}</td>
-                <td>{{trainee.major}}</td>
-                <td>{{trainee.techScreenerName}}</td>
-                <td>{{trainee.projectCompletion}}</td>
-                <td>
-                  <i class="fa fa-pencil c-pointer" style="color:#fa7427 ;" aria-hidden="true" (click)="openUpdateTraineeModal(createTrainee, trainee)"></i>
-                </td>
-                <td>
-                  <i class="fa fa-times c-pointer" style="color:#fa7427 ;" aria-hidden="true" (click)="deleteTraineeFunction(trainee)"></i>
-                </td>
-              </tr>
-            </tbody>
-
-            <tbody *ngIf="showDropped">
-              <tr *ngFor="let trainee of droppedTrainees">
-                <td>{{trainee.name}}</td>
-                <td>{{trainee.email}}</td>
-                <td>{{trainee.trainingStatus}}</td>
-                <td>{{trainee.phoneNumber}}</td>
-                <td>{{trainee.skypeId}}</td>
-                <td>
-                  <a *ngIf="trainee.profileUrl" [href]="trainee.profileUrl" target="_blank">
-                    <i class="fa fa-file-code-o" style="color: #F26925" aria-hidden="true"></i>
-                  </a>
-                </td>
-                <td>{{trainee.recruiterName}}</td>
-                <td>{{trainee.college}}</td>
-                <td>{{trainee.degree}}</td>
-                <td>{{trainee.major}}</td>
-                <td>{{trainee.techScreenerName}}</td>
-                <td>{{trainee.projectCompletion}}</td>
-                <td>
-                  <i class="fa fa-pencil c-pointer" style="color:#fa7427 ;" aria-hidden="true" (click)="openUpdateTraineeModal(createTrainee, trainee)"></i>
-                </td>
-                <td>
-                  <i class="fa fa-times c-pointer" style="color:#fa7427 ;" aria-hidden="true" (click)="deleteTraineeFunction(trainee)"></i>
-                </td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      </div>
-    </div>
-  </ng-template>
-</div>
-
-<!-- Create trainee modal -->
-<div class="batch-trainee-modal-container2">
-  <ng-template #createTrainee let-c="close" let-d="dismiss">
-    <div class="modal-header" style="background-color: #f1f2f4">
-      <h4 style="font-size: 20px" class="modal-title">Add Trainees</h4>
-    </div>
-    <div class="modal-body" style="margin-top: 14px !important;">
-      <h4 *ngIf="isNew" style="font-size: 26px" class="modal-title">Add Trainee</h4>
-      <h4 *ngIf="!isNew" style="font-size: 26px" class="modal-title">Update Trainee</h4>
-      <div class="row">
-        <div class="form-group col-md-6 col-sm-6">
-          <label for="fullName">Full Name:</label>
-          <input [(ngModel)]="createNewTrainee.name" type="text" class="form-control" id="name" placeholder="Name">
-        </div>
-        <div class="form-group col-md-6 col-sm-6">
-          <label for="email">Email:</label>
-          <input [(ngModel)]="createNewTrainee.email" type="text" class="form-control" id="email" placeholder="Email">
-        </div>
-      </div>
-      <div class="row">
-        <div class="form-group col-md-6 col-sm-6">
-          <label for="skypeId">Skype Id:</label>
-          <input [(ngModel)]="createNewTrainee.skypeId" type="text" class="form-control" id="skypeId" placeholder="Skype Id">
-        </div>
-        <div class="form-group col-md-6 col-sm-6">
-          <label for="phone">Phone:</label>
-          <input [(ngModel)]="createNewTrainee.phoneNumber" type="text" class="form-control" id="phone" placeholder="(xxx)xxx-xxxx">
-        </div>
-      </div>
-      <div class="row">
-        <div class="form-group col-md-6 col-sm-6">
-          <label for="college">College</label>
-          <input [(ngModel)]="createNewTrainee.college" type="text" class="form-control" id="college" placeholder="College">
-        </div>
-        <div class="form-group col-md-6 col-sm-6">
-          <label for="degree">Degree:</label>
-          <input [(ngModel)]="createNewTrainee.degree" type="text" class="form-control" id="degree" placeholder="Degree">
-        </div>
-
-      </div>
-      <div class="row">
-        <div class="form-group col-md-6 col-sm-6">
-          <label for="major">Major:</label>
-          <input [(ngModel)]="createNewTrainee.major" type="text" class="form-control" id="major" placeholder="Major">
-        </div>
-        <div class="form-group col-md-6 col-sm-6">
-          <label for="Recruiter Name:">Recruiter Name:</label>
-          <input [(ngModel)]="createNewTrainee.recruiterName" type="text" class="form-control" id="recruiterName" placeholder="Recruiter Name">
-        </div>
-
-      </div>
-      <div class="row">
-        <div class="form-group col-md-6 col-sm-6">
-          <label for="techScreenerName">Tech Screener Name:</label>
-          <input [(ngModel)]="createNewTrainee.techScreenerName" type="text" class="form-control" id="techScreenerName" placeholder="Tech Screener Name">
-        </div>
-        <div class="form-group col-md-6 col-sm-6">
-          <label for="projectCompletion">Project Completion:</label>
-          <input [(ngModel)]="createNewTrainee.projectCompletion" type="text" class="form-control" id="projectCompletion" placeholder="0%">
-        </div>
-
-      </div>
-      <div class="row">
-        <div class="form-group col-md-12 col-sm-12">
-          <label for="profileUrl">Profile URL:</label>
-          <input [(ngModel)]="createNewTrainee.profileUrl" type="text" class="form-control" id="profileUrl" placeholder="http://www.example.com/revature">
-        </div>
-
-      </div>
-      <div class="row">
-        <div class="form-group col-md-12 col-sm-12">
-          <label for="trainingStatus">Training Status</label>
-          <select *ngIf="isNew" [ngModel]="selectStatus" [(ngModel)]="createNewTrainee.trainingStatus" class="form-control" id="trainer"
-            placeholder="Select Status">
-            <option [disabled]="true">
-              {{selectStatus}}
-            </option>
-            <option *ngFor="let status of statuses">{{status}}</option>
-          </select>
-          <select *ngIf="!isNew" [ngModel]="statuses[5]" [(ngModel)]="createNewTrainee.trainingStatus" class="form-control" id="trainer"
-            placeholder="Select Status">
-            <option *ngFor="let status of statuses">{{status}}</option>
-          </select>
-        </div>
+        </ng-template>
       </div>
 
-    </div>
-    <div class="modal-footer">
-      <button class="btn btn-primary c-pointer" *ngIf="isNew" (click)="createNewTraineeFunction()">
-        <strong>Save</strong>
-      </button>
-      <button class="btn btn-primary c-pointer" *ngIf="!isNew" (click)="updateTraineeFunction()">
-        <strong>Save</strong>
-      </button>
-      <button type="button" class="btn btn-default c-pointer" (click)="closeCreateTraineeModal()">Close</button>
-    </div>
-  </ng-template>
-</div>
+      <!-- Create trainee modal -->
+      <div class="batch-trainee-modal-container2">
+        <ng-template #createTrainee let-c="close" let-d="dismiss">
+          <div class="modal-header" style="background-color: #f1f2f4">
+            <h4 style="font-size: 20px" class="modal-title">Add Trainees</h4>
+          </div>
+          <div class="modal-body" style="margin-top: 14px !important;">
+            <h4 *ngIf="isNew" style="font-size: 26px" class="modal-title">Add Trainee</h4>
+            <h4 *ngIf="!isNew" style="font-size: 26px" class="modal-title">Update Trainee</h4>
+            <div class="row">
+              <div class="form-group col-md-6 col-sm-6">
+                <label for="fullName">Full Name:</label>
+                <input [(ngModel)]="createNewTrainee.name" type="text" class="form-control" id="name" placeholder="Name">
+              </div>
+              <div class="form-group col-md-6 col-sm-6">
+                <label for="email">Email:</label>
+                <input [(ngModel)]="createNewTrainee.email" type="text" class="form-control" id="email" placeholder="Email">
+              </div>
+            </div>
+            <div class="row">
+              <div class="form-group col-md-6 col-sm-6">
+                <label for="skypeId">Skype Id:</label>
+                <input [(ngModel)]="createNewTrainee.skypeId" type="text" class="form-control" id="skypeId" placeholder="Skype Id">
+              </div>
+              <div class="form-group col-md-6 col-sm-6">
+                <label for="phone">Phone:</label>
+                <input [(ngModel)]="createNewTrainee.phoneNumber" type="text" class="form-control" id="phone" placeholder="(xxx)xxx-xxxx">
+              </div>
+            </div>
+            <div class="row">
+              <div class="form-group col-md-6 col-sm-6">
+                <label for="college">College</label>
+                <input [(ngModel)]="createNewTrainee.college" type="text" class="form-control" id="college" placeholder="College">
+              </div>
+              <div class="form-group col-md-6 col-sm-6">
+                <label for="degree">Degree:</label>
+                <input [(ngModel)]="createNewTrainee.degree" type="text" class="form-control" id="degree" placeholder="Degree">
+              </div>
 
-<!-- Update batch modal -->
-<!-- <div class="batch-trainee-modal-container2">
+            </div>
+            <div class="row">
+              <div class="form-group col-md-6 col-sm-6">
+                <label for="major">Major:</label>
+                <input [(ngModel)]="createNewTrainee.major" type="text" class="form-control" id="major" placeholder="Major">
+              </div>
+              <div class="form-group col-md-6 col-sm-6">
+                <label for="Recruiter Name:">Recruiter Name:</label>
+                <input [(ngModel)]="createNewTrainee.recruiterName" type="text" class="form-control" id="recruiterName" placeholder="Recruiter Name">
+              </div>
+
+            </div>
+            <div class="row">
+              <div class="form-group col-md-6 col-sm-6">
+                <label for="techScreenerName">Tech Screener Name:</label>
+                <input [(ngModel)]="createNewTrainee.techScreenerName" type="text" class="form-control" id="techScreenerName" placeholder="Tech Screener Name">
+              </div>
+              <div class="form-group col-md-6 col-sm-6">
+                <label for="projectCompletion">Project Completion:</label>
+                <input [(ngModel)]="createNewTrainee.projectCompletion" type="text" class="form-control" id="projectCompletion" placeholder="0%">
+              </div>
+
+            </div>
+            <div class="row">
+              <div class="form-group col-md-12 col-sm-12">
+                <label for="profileUrl">Profile URL:</label>
+                <input [(ngModel)]="createNewTrainee.profileUrl" type="text" class="form-control" id="profileUrl" placeholder="http://www.example.com/revature">
+              </div>
+
+            </div>
+            <div class="row">
+              <div class="form-group col-md-12 col-sm-12">
+                <label for="trainingStatus">Training Status</label>
+                <select *ngIf="isNew" [ngModel]="selectStatus" [(ngModel)]="createNewTrainee.trainingStatus" class="form-control" id="trainer"
+                  placeholder="Select Status">
+                  <option [disabled]="true">
+                    {{selectStatus}}
+                  </option>
+                  <option *ngFor="let status of statuses">{{status}}</option>
+                </select>
+                <select *ngIf="!isNew" [ngModel]="statuses[5]" [(ngModel)]="createNewTrainee.trainingStatus" class="form-control" id="trainer"
+                  placeholder="Select Status">
+                  <option *ngFor="let status of statuses">{{status}}</option>
+                </select>
+              </div>
+            </div>
+
+          </div>
+          <div class="modal-footer">
+            <button class="btn btn-primary c-pointer" *ngIf="isNew" (click)="createNewTraineeFunction()">
+              <strong>Save</strong>
+            </button>
+            <button class="btn btn-primary c-pointer" *ngIf="!isNew" (click)="updateTraineeFunction()">
+              <strong>Save</strong>
+            </button>
+            <button type="button" class="btn btn-default c-pointer" (click)="closeCreateTraineeModal()">Close</button>
+          </div>
+        </ng-template>
+      </div>
+
+      <!-- Update batch modal -->
+      <!-- <div class="batch-trainee-modal-container2">
   <ng-template #updateBatch let-c="close" let-d="dismiss">
     <div class="modal-header">
       <h4 class="modal-title">Update Batch</h4>

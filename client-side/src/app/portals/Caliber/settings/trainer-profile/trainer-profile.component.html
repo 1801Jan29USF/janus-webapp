@@ -9,11 +9,11 @@
             <div class="card hovercard">
                 <div class="info">
                     <div class="title">
-                        {{ currentTrainer.name }}
+                        {{ currentTrainer.firstName }} {{currentTrainer.lastName}}
                     </div>
                     <div class="desc">{{ currentTrainer.title }}</div>
                     <div class="desc">{{ currentTrainer.email }}</div>
-                    <div class="desc">{{ currentTrainer.tier | displayTier: currentTrainer.tier}}</div>
+                    <div class="desc">{{ currentTrainer.role}}</div>
                 </div>
                 <div class="bottom">
                     <i class="fa fa-pencil" style="color:#ff8e4d;" (click)="editTrainer(content, currentTrainer)"></i>
@@ -27,7 +27,7 @@
     Current Trainer Batches Table
 **************************************************************************************************************
  -->
-    {{currentTrainer.name}}'s Batches:
+    {{currentTrainer.firstName}}'s Batches:
     <div>
         <div id="trainers-table">
             <table class="table table-hover">
@@ -41,14 +41,14 @@
                 <th></th>
                 <th></th>
                 <th></th>
-                <tr *ngFor='let batch of batches | batchByTrainer: currentTrainer.name'>
+                <tr *ngFor='let batch of batches'>
                     <td>{{batch.trainingName}}</td>
                     <td>{{batch.trainingType}}</td>
                     <td>{{batch.skillType}}</td>
                     <td>{{batch.conTrainer}}</td>
-                    <td>{{batch.address.city}}, {{batch.address.state}}</td>
-                    <td>{{batch.startDate}}</td>
-                    <td>{{batch.endDate}}</td>
+                    <td>{{batch.location}}</td>
+                    <td>{{batch.startDate | date:'shortDate'}}</td>
+                    <td>{{batch.endDate | date:'shortDate'}}</td>
                     <td>
                         <i class="fa fa-users" style="color:#ff8e4d;" aria-hidden="true" (click)="setCurrentBatch(batch); openLarge(showBatch)"></i>
                     </td>
@@ -88,9 +88,14 @@
             <div class="form-group">
                 <div class="row">
                     <div class="col-md-6">
-                        <!-- Field for Trainer name -->
-                        <label class="col-sm-2 control-label text-nowrap" for="name">Trainer Name:</label>
-                        <input type="text" class="form-control" id="name" name="name" formControlName="name" placeholder="Trainer Name" />
+                        <!-- Field for Trainer first name -->
+                        <label class="col-sm-2 control-label text-nowrap" for="firstName">First Name:</label>
+                        <input type="text" class="form-control" id="firstName" name="firstName" formControlName="firstName" placeholder="Trainer First Name" />
+                    </div>
+                    <div class="col-md-6">
+                        <!-- Field for Trainer last name -->
+                        <label class="col-sm-2 control-label text-nowrap" for="lastName">Last Name:</label>
+                        <input type="text" class="form-control" id="lastName" name="lastName" formControlName="lastName" placeholder="Trainer Last Name" />
                     </div>
                     <div class="col-md-6">
                         <!-- Field for email -->
@@ -109,10 +114,10 @@
                         </datalist>
                     </div>
                     <div class="col-md-6">
-                        <!-- Dropdown for Trainer tier/role -->
-                        <label class="col-sm-2 control-label text-nowrap" for="tier">Tier</label>
-                        <select class="form-control" formControlName="tier" (ngModelChange)="tierChange($event)" name="tier">
-                            <option [value]="tier" *ngFor="let tier of tiers">{{tier | slice:5}}</option>
+                        <!-- Dropdown for Trainer role/role -->
+                        <label class="col-sm-2 control-label text-nowrap" for="role">Role</label>
+                        <select class="form-control" formControlName="role" (ngModelChange)="roleChange($event)" name="role">
+                            <option [value]="role" *ngFor="let role of roles">{{role}}</option>
                         </select>
                     </div>
                 </div>
@@ -140,13 +145,15 @@
     <div class="modal-body modal-lg">
         <div id="trainers-table">
             <table class="table table-hover">
-                <th>Name</th>
+                <th>First Name</th>
+                <th>Last Name</th>
                 <th>Email</th>
                 <th>Phone Number</th>
                 <th>Training Status</th>
                 <tr *ngFor='let trainee of currentBatch.trainees'>
-                    <td>{{trainee.name}}</td>
-                    <td>{{trainee.email}}</td>
+                    <td>{{trainee.traineeUserInfo.firstName}}</td>
+                    <td>{{trainee.traineeUserInfo.lastName}}</td>
+                    <td>{{trainee.traineeUserInfo.email}}</td>
                     <td>{{trainee.phoneNumber}}</td>
                     <td>{{trainee.trainingStatus}}</td>
                 </tr>

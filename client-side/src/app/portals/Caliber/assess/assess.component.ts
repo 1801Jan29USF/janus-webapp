@@ -1,15 +1,12 @@
 import { Component, OnInit, NgModule, ViewEncapsulation, ElementRef} from '@angular/core';
 import { Http, HttpModule } from '@angular/http';
-import { BatchService } from '../services/batch.service';
 import { HttpClientModule  } from '@angular/common/http';
-import { Batch } from '../entities/Batch';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Assessment } from '../entities/Assessment';
 import { AssessmentService } from '../services/assessment.service';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { GradeService } from '../services/grade.service';
 import { Grade } from '../entities/Grade';
-import { Trainee } from '../entities/Trainee';
 import { CategoryService } from '../services/category.service';
 import { Category } from '../entities/Category';
 import { Note } from '../entities/Note';
@@ -22,6 +19,10 @@ import { DatePipe } from '@angular/common';
 import { ScrollEvent } from 'ngx-scroll-event';
 import { window } from 'rxjs/operators/window';
 import { HostListener } from '@angular/core/src/metadata/directives';
+import { HydraBatchService } from '../../../hydra-client/services/batch/hydra-batch.service';
+import { HydraBatch } from '../../../hydra-client/entities/HydraBatch';
+import { HydraBatchUtilService } from '../../../services/hydra-batch-util.service';
+import { HydraTrainee } from '../../../hydra-client/entities/HydraTrainee';
 
 
 @Component({
@@ -34,9 +35,9 @@ import { HostListener } from '@angular/core/src/metadata/directives';
 export class AssessComponent implements OnInit {
   assessment: Assessment;
 
-  batches: Batch[] = [];
+  batches: HydraBatch[] = [];
   assessments: Assessment[] = [];
-  selectedBatch: Batch = new Batch();
+  selectedBatch: HydraBatch = new HydraBatch();
   grades: Grade[] = [];
   updatingGrades: Set<Grade> = new Set<Grade>();
   selectedWeek: number;
@@ -50,13 +51,13 @@ export class AssessComponent implements OnInit {
 
   years: Set<any> = new Set<any>();
   currentYear = 0;
-  yearBatches: Batch[] = [];
-  selectedTrainees: Trainee[] = [];
+  yearBatches: HydraBatch[] = [];
+  selectedTrainees: HydraTrainee[] = [];
 
   pageOffsetValue;
-  constructor(private modalService: NgbModal, private batchService: BatchService, private assessmentService: AssessmentService,
+  constructor(private modalService: NgbModal, private batchService: HydraBatchService, private assessmentService: AssessmentService,
     private gradeService: GradeService, private categoryService: CategoryService, private noteService: NoteService,
-    private fb: FormBuilder, private datePipe: DatePipe) {}
+    private fb: FormBuilder, private datePipe: DatePipe, private batchUtil: HydraBatchUtilService) {}
 
   getPageOffsetHeight(event: ScrollEvent) {
     this.pageOffsetValue = pageYOffset;
@@ -103,7 +104,7 @@ export class AssessComponent implements OnInit {
       this.newAssessment.category = this.findCategory('Java');
     });
 
-    this.batchService.getList().subscribe(batch => {
+    this.batchService.fetchAll().subscribe(batch => {
       this.batches = batch;
 
       if (this.batches.length !== 0) {
@@ -119,7 +120,7 @@ export class AssessComponent implements OnInit {
 
         this.switchYear(this.currentYear);
         this.changeBatch(this.yearBatches[0]);
-        this.selectedWeek = this.selectedBatch.weeks;
+        this.selectedWeek = this.batchUtil.getWeek(this.selectedBatch);
       }
     });
 
@@ -203,7 +204,7 @@ export class AssessComponent implements OnInit {
                                       GRADES
 *****************************************************************************************/
 
-  updateGrade(trainee: Trainee, assessment: Assessment, input) {
+  updateGrade(trainee: HydraTrainee, assessment: Assessment, input) {
     const grade = this.getGrade(trainee, assessment);
     grade.score = Number(input.value);
     grade.dateReceived = '2000-01-01T01:01:01.000Z';
@@ -211,7 +212,7 @@ export class AssessComponent implements OnInit {
     this.gradeService.update(grade);
   }
 
-  getGrade(trainee: Trainee, assessment: Assessment) {
+  getGrade(trainee: HydraTrainee, assessment: Assessment) {
     const grade = new GradeByTraineeByAssessmentPipe().transform(this.grades, trainee, assessment)[0];
 
     if (grade != null) {
@@ -266,7 +267,7 @@ export class AssessComponent implements OnInit {
                                       NOTES
 *****************************************************************************************/
 
-  getNote(trainee: Trainee) {
+  getNote(trainee: HydraTrainee) {
     let note: Note;
     note = new NoteByTraineeByWeekPipe().transform(this.notes, trainee, this.selectedWeek);
     if (note.content === undefined) {
@@ -275,7 +276,7 @@ export class AssessComponent implements OnInit {
     return note;
   }
 
-  getWeekBatchNote(batch: Batch): Note {
+  getWeekBatchNote(batch: HydraBatch): Note {
     const n = this.notes.filter( (note) => {
       return (note.type === 'BATCH' && Number(note.week) === Number(this.selectedWeek));
     })[0];
@@ -333,10 +334,8 @@ export class AssessComponent implements OnInit {
   }
 
   addWeek() {
-    this.selectedBatch.weeks += 1;
-    this.addWeekOfNotes(this.selectedBatch.weeks);
-    this.batchService.update(this.selectedBatch);
-    this.selectedWeek = this.selectedBatch.weeks;
+    this.addWeekOfNotes(this.selectedWeek);
+    this.selectedWeek = this.batchUtil.getWeek(this.selectedBatch);
     this.assessmentService.fetchByBatchIdByWeek(this.selectedBatch.batchId, this.selectedWeek);
     this.gradeService.fetchByBatchIdByWeek(this.selectedBatch.batchId, this.selectedWeek);
     this.noteService.fetchByBatchIdByWeek(this.selectedBatch.batchId, this.selectedWeek);
@@ -346,8 +345,8 @@ export class AssessComponent implements OnInit {
     this.currentYear = Number(year);
   }
 
-  changeBatch(batch: Batch) {
-      this.selectedWeek = batch.weeks;
+  changeBatch(batch: HydraBatch) {
+      this.selectedWeek = this.batchUtil.getWeek(batch);
 
     this.selectedBatch = batch;
 
@@ -357,9 +356,9 @@ export class AssessComponent implements OnInit {
 
     this.selectedTrainees = this.selectedBatch.trainees;
     this.selectedTrainees.sort((a, b) => {
-      if (a.name < b.name) {
+      if (a.traineeUserInfo.firstName < b.traineeUserInfo.firstName) {
         return -1;
-      } else if (a.name > b.name) {
+      } else if (a.traineeUserInfo.firstName > b.traineeUserInfo.firstName) {
         return 1;
       } else {
         return 0;
@@ -387,7 +386,7 @@ export class AssessComponent implements OnInit {
       }
     }
     if (this.yearBatches[0] != null) {
-      this.selectedWeek = this.yearBatches[0].weeks;
+      this.selectedWeek = this.batchUtil.getWeek(this.yearBatches[0]);
       this.switchBatch(this.yearBatches[0].batchId);
 
     }

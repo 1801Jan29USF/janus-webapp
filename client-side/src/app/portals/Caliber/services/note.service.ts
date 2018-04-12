@@ -12,9 +12,9 @@ import { AlertsService } from './alerts.service';
 
 // entities
 import { Note } from '../entities/Note';
-import { Trainee } from '../entities/Trainee';
-import { Batch } from '../entities/Batch';
 import { urls } from './urls';
+import { HydraBatch } from '../../../hydra-client/entities/HydraBatch';
+import { HydraTrainee } from '../../../hydra-client/entities/HydraTrainee';
 
 /**
 * this service manages calls to the web services
@@ -160,7 +160,7 @@ export class NoteService {
   *
   * spring-security: @PreAuthorize("hasAnyRole('VP', 'QC', 'TRAINER', 'STAGING','PANEL')")
   */
-  public fetchByTrainee(trainee: Trainee): void {
+  public fetchByTrainee(trainee: HydraTrainee): void {
     const $trainingNotes = this.fetchTrainingNotesByTrainee(trainee);
     const $qcNotes = this.fetchQcNotesByTrainee(trainee);
     let results: Note[] = [];
@@ -183,7 +183,7 @@ export class NoteService {
   *
   * spring-security: @PreAuthorize("hasAnyRole('VP', 'QC', 'TRAINER', 'STAGING','PANEL')")
   */
-  public fetchTrainingNotesByTrainee(trainee: Trainee): Observable<Note[]> {
+  public fetchTrainingNotesByTrainee(trainee: HydraTrainee): Observable<Note[]> {
     const url = urls.note.fetchTrainingNotesByTrainee(trainee.traineeId);
 
     return this.httpClient.get<Note[]>(url);
@@ -197,7 +197,7 @@ export class NoteService {
   *
   * spring-security: @PreAuthorize("hasAnyRole('VP', 'QC', 'TRAINER', 'STAGING','PANEL')")
   */
-  public fetchQcNotesByTrainee(trainee: Trainee): Observable<Note[]> {
+  public fetchQcNotesByTrainee(trainee: HydraTrainee): Observable<Note[]> {
     const url = urls.note.fetchQcNotesByTrainee(trainee.traineeId);
 
     return this.httpClient.get<Note[]>(url);
@@ -259,7 +259,7 @@ export class NoteService {
 * @param batch: Batch
 * @param note: Note
 */
-  public getAllQCTraineeNotes(batch: Batch, note: Note): void {
+  public getAllQCTraineeNotes(batch: HydraBatch, note: Note): void {
     const url = urls.note.getAllQCTraineeNotes(batch.batchId, note.week);
 
     this.listSubject.next([]);
@@ -276,7 +276,7 @@ export class NoteService {
   * @param note: Note
  */
 
-  public findQCBatchNotes(batch: Batch, note: Note): void {
+  public findQCBatchNotes(batch: HydraBatch, note: Note): void {
     const url = urls.note.findQCBatchNotes(batch.batchId, note.week);
 
     this.listSubject.next([]);

@@ -9,14 +9,14 @@ import { PanelSearchbarComponent } from '../panel-searchbar/panel-searchbar.comp
 import { Subscription } from 'rxjs/Subscription';
 
 // entities
-import { Trainee } from '../../entities/Trainee';
 import { Panel } from '../../entities/Panel';
-import { Batch } from '../../entities/Batch';
-
+import { HydraTrainee } from '../../../../hydra-client/entities/HydraTrainee';
+import { HydraBatch } from '../../../../hydra-client/entities/HydraBatch';
 
 // services
 import { BatchService } from '../../services/batch.service';
 import { PanelService } from '../../services/panel.service';
+
 
 
 
@@ -28,8 +28,8 @@ import { PanelService } from '../../services/panel.service';
 export class InterviewDetailsComponent implements OnInit, OnDestroy {
 
   traineeSubscription: Subscription;
-  trainee: Trainee;
-  batchList: Batch[];
+  trainee: HydraTrainee;
+  batchList: HydraBatch[];
   panelList: Panel[];
   batchSubscription: Subscription;
   trainingTrack: string;
@@ -63,16 +63,16 @@ export class InterviewDetailsComponent implements OnInit, OnDestroy {
       this.trainee = trainee;
     });
 
-    this.batchSubscription = this.batchService.getList().subscribe((batchList) => {
-      this.batchList = batchList;
-      for (let i = 0; i < this.batchList.length; i++) {
-        for (let j = 0; j < this.batchList[i].trainees.length; j++) {
-          if (this.batchList[i].trainees[j].name === this.trainee.name) {
-            this.trainingTrack = this.batchList[i].skillType;
-          }
-        }
-      }
-    });
+    // this.batchSubscription = this.batchService.getList().subscribe((batchList) => {
+    //   this.batchList = batchList;
+    //   for (let i = 0; i < this.batchList.length; i++) {
+    //     for (let j = 0; j < this.batchList[i].trainees.length; j++) {
+    //       if (this.batchList[i].trainees[j].name === this.trainee.name) {
+    //         this.trainingTrack = this.batchList[i].skillType;
+    //       }
+    //     }
+    //   }
+    // });
 
     this.panelService.listSubject.asObservable().subscribe((panelList) => {
       this.panelList = panelList;

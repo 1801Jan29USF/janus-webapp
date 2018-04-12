@@ -9,11 +9,13 @@ import { Observable } from 'rxjs/Observable';
 import { ReportingService } from '../../services/reporting.service';
 import { GranularityService } from '../services/granularity.service';
 import { NoteService } from '../../services/note.service';
+import { HydraBatchService } from '../../../../hydra-client/services/batch/hydra-batch.service';
 
 // entities
 import { Note } from '../../entities/Note';
-import { Trainee } from '../../entities/Trainee';
-import { Batch } from '../../entities/Batch';
+import { HydraBatch } from '../../../../hydra-client/entities/HydraBatch';
+import { HydraBatchUtilService } from '../../../../services/hydra-batch-util.service';
+import { HydraTrainee } from '../../../../hydra-client/entities/HydraTrainee';
 
 /**
  * Creates a table of the overall feedback of a given trainee in a given batch.
@@ -41,13 +43,15 @@ export class OverallFeedbackComponent implements OnInit, OnDestroy {
   traineeNotes: Array<Note> = null;
   weekTopics: Array<Array<string>>;
 
-  trainee: Trainee;
+  trainee: HydraTrainee;
   week = 1;
-  batch: Batch;
+  batch: HydraBatch;
 
   constructor(private granularityService: GranularityService,
-              private noteService: NoteService,
-              private reportService: ReportingService) { }
+    private noteService: NoteService,
+    private reportService: ReportingService,
+    private batchService: HydraBatchService,
+    private batchUtil: HydraBatchUtilService) { }
 
   ngOnInit() {
 
@@ -61,7 +65,7 @@ export class OverallFeedbackComponent implements OnInit, OnDestroy {
 
         if (this.trainee.traineeId > 0) {
           this.noteService.fetchByTrainee(this.trainee);
-          this.reportService.fetchTechnologiesUpToWeek(this.batch.batchId, this.batch.gradedWeeks);
+          this.reportService.fetchTechnologiesUpToWeek(this.batch.batchId, this.batchUtil.getWeek(this.batch));
         }
       });
 

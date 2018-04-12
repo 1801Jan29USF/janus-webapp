@@ -4,12 +4,16 @@ import { Observable } from 'rxjs/Observable';
 
 import { NgbModal, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
 import { Router } from '@angular/router';
-import { Trainer } from '../../entities/Trainer';
-import { Batch } from '../../entities/Batch';
-import { TrainerService } from '../../services/trainer.service';
-import { BatchService } from '../../services/batch.service';
+
+
+
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Subscription } from 'rxjs/Subscription';
+import { TrainerService } from '../../../../hydra-client/services/trainer/trainer.service';
+import { HydraTrainer } from '../../../../hydra-client/entities/HydraTrainer';
+import { HydraBatchService } from '../../../../hydra-client/services/batch/hydra-batch.service';
+import { HydraBatch } from '../../../../hydra-client/entities/HydraBatch';
+import { HydraTrainee } from '../../../../hydra-client/entities/HydraTrainee';
+import { HydraTraineeService } from '../../../../hydra-client/services/trainee/hydra-trainee.service';
 
 @Component({
   selector: 'app-trainer-profile',
@@ -22,54 +26,60 @@ export class TrainerProfilesComponent implements OnInit {
   * create variables for all batches,
   * current trainer and their batch
   */
-  currentTrainer: Trainer;
-  batches: Array<Batch>;
-  currentBatch: Batch;
+  currentTrainer: HydraTrainer;
+  batches: Array<HydraBatch>;
+  currentBatch: HydraBatch;
+  currentBatchTrainees: Array<HydraTrainee>;
 
   /**
   * create variables for subscribing and trainers
   * and storing form data
   */
-  private trainerSubscription: Subscription;
-  trainers: Array<Trainer>;
+  trainers: Array<HydraTrainer>;
   titles: Array<any>;
-  tiers: Array<any>;
-  model = new Trainer();
-  currEditTrainer: Trainer;
-  newTier: string;
+  roles: Array<any>;
+  model = new HydraTrainer();
+  currEditTrainer: HydraTrainer;
+  newRole: string;
   newTitle: string;
   rForm: FormGroup;
 
   constructor(private trainerService: TrainerService, private modalService: NgbModal,
-    private batchService: BatchService, private router: Router, private fb: FormBuilder) { }
+    private batchService: HydraBatchService, private router: Router,
+     private fb: FormBuilder, private traineeService: HydraTraineeService) { }
 
   ngOnInit() {
-  /**
-  * gets the current trainer for the page from trainer service's current trainer
-  * if the current trainer is null navigate back to the trainers page so that the user can select one
-  */
-    this.trainerService.currentTrainer.subscribe(currentTrainer => this.currentTrainer = currentTrainer);
+    /**
+    * gets the current trainer for the page from trainer service's current trainer
+    * if the current trainer is null navigate back to the trainers page so that the user can select one
+    */
+    // this.trainerService.currentTrainer.subscribe(currentTrainer => this.currentTrainer = currentTrainer);
+    this.currentTrainer = this.trainerService.currentTrainer;
     if (this.currentTrainer == null) {
       this.router.navigate(['Caliber/settings/trainers']);
     }
 
-  /**
-  * fetches all batches and pushes into the batches object,
-  */
-    this.batchService.fetchAll();
-    this.batchService.getList().subscribe(
-      (batches: Batch[]) => { this.batches = batches; }
+    /**
+    * fetches all batches and pushes into the batches object,
+    */
+    // this.batchService.fetchAll().subscribe(
+    //   (batches: Batch[]) => { this.batches = batches; }
+    // );
+
+    this.batchService.fetchAllByTrainerId(this.currentTrainer.trainerId).subscribe(
+      (batches: HydraBatch[]) => { this.batches = batches; }
     );
 
-  /**
-  * fetches all trainers, titles and tiers and pushes them onto the trainers, titles and tiers subjects
-  */
-    this.trainerService.populateOnStart();
-    this.trainerService.listSubject.subscribe((resp) => {
+    /**
+    * fetches all trainers, titles and roles and pushes them onto the trainers, titles and roles observables
+    */
+    this.trainerService.fetchAll().subscribe((resp) => {
       this.trainers = resp;
     });
-    this.trainerService.titlesSubject.subscribe(res => this.titles = res);
-    this.trainerService.tiersSubject.subscribe(res => this.tiers = res);
+    this.trainerService.fetchTitles().subscribe(res => this.titles = res);
+    this.trainerService.fetchRoles().subscribe(res => {
+      this.roles = (res.filter(role => role !== 'INACTIVE')); // filter out INACTIVE role
+    });
   }
 
   /**
@@ -98,6 +108,10 @@ export class TrainerProfilesComponent implements OnInit {
   */
   setCurrentBatch(batch) {
     this.currentBatch = batch;
+    this.traineeService.findAllByBatchAndStatus(batch.batchId, 'Training').subscribe( res =>
+      this.currentBatch.trainees = res
+    );
+    console.log(batch);
   }
 
   /**
@@ -121,26 +135,27 @@ export class TrainerProfilesComponent implements OnInit {
   * @param content: String
   * @param modalTrainer: Trainer
   */
-  editTrainer(content, modalTrainer: Trainer) {
+  editTrainer(content, modalTrainer: HydraTrainer) {
     this.currEditTrainer = modalTrainer;
-    this.newTier = modalTrainer.tier;
+    this.newRole = modalTrainer.role;
     this.newTitle = modalTrainer.title;
     this.rForm = this.fb.group({
-      'name': [this.currEditTrainer.name, Validators.required],
+      'firstName': [this.currEditTrainer.firstName, Validators.required],
+      'lastName': [this.currEditTrainer.lastName, Validators.required],
       'email': [this.currEditTrainer.email, Validators.required],
       'title': [this.newTitle],
-      'tier': [this.newTier],
+      'role': [this.newRole],
     });
     this.modalService.open(content, { size: 'lg' });
   }
 
   /**
-  * When tier was changed
+  * When role was changed
   *
-  * @param newTier: string
+  * @param newRole: string
   */
-  tierChange(newTier) {
-    this.newTier = newTier;
+  roleChange(newRole) {
+    this.newRole = newRole;
   }
 
   /**
@@ -165,12 +180,16 @@ export class TrainerProfilesComponent implements OnInit {
   */
   updateTrainer(modal) {
     // replacing the trainer's fields with the new ones
-    this.currEditTrainer.tier = this.newTier;
+    this.currEditTrainer.role = this.newRole;
     this.currEditTrainer.title = this.newTitle;
-    this.currEditTrainer.name = modal.name;
+    this.currEditTrainer.firstName = modal.firstName;
+    this.currEditTrainer.lastName = modal.lastName;
     this.currEditTrainer.email = modal.email;
     // call trainerService to update
-    this.trainerService.updateTrainer(this.currEditTrainer);
+    this.trainerService.update(this.currEditTrainer).subscribe((resp) => {
+      const temp = this.currEditTrainer;
+      this.trainerService.fetchAll();
+    });
   }
 
 }

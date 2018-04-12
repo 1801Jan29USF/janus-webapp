@@ -15,7 +15,7 @@
     </button>
   </div>
 
-  <!--Trainers table. Displays the trainer's name, title, email, and tier, and the icons to
+  <!--Trainers table. Displays the trainer's name, title, email, and role, and the icons to
 add or edit a trainer-->
   <div id="trainers-table" class="table-responsive">
     <table class="table table-hover">
@@ -24,16 +24,16 @@ add or edit a trainer-->
           <th>Name</th>
           <th>Title</th>
           <th>Email</th>
-          <th>Tier</th>
+          <th>Role</th>
           <th></th>
           <th></th>
           <th></th>
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let trainer of trainers">
+        <tr *ngFor="let trainer of filteredTrainers">
           <td>
-            {{trainer.name}}
+            {{trainer.firstName}} {{trainer.lastName}}
           </td>
           <td>
             {{trainer.title}}
@@ -42,11 +42,12 @@ add or edit a trainer-->
             {{trainer.email}}
           </td>
           <td>
-            {{trainer.tier | displayTier: trainer.tier}}
+            {{trainer.role}}
+
           </td>
-          <!--<td>
+          <td>
             <i class="fa fa-user" style="color:#F26925;" (click)="goToProfile(trainer)"></i>
-          </td>-->
+          </td>
           <td>
             <i class="fa fa-pencil" style="color:#F26925;" (click)="editTrainer(content, trainer)"></i>
           </td>
@@ -72,9 +73,15 @@ add or edit a trainer-->
         <div class="form-group">
           <div class="row">
             <div class="col-lg-6 col-md-6 col-sm-12">
-              <!-- Field for Trainer name -->
-              <label class="col-sm-2 control-label text-nowrap" for="name">Trainer Name:</label>
-              <input type="text" class="form-control" id="name" name="name" formControlName="name" placeholder="Trainer Name" />
+              <!-- Field for Trainer first name -->
+              <label class="col-sm-2 control-label text-nowrap" for="name">First Name:</label>
+              <input type="text" class="form-control" id="first name" name="name" formControlName="firstName" placeholder="First Name"
+              />
+            </div>
+            <div class="col-lg-6 col-md-6 col-sm-12">
+              <!-- Field for Trainer last name -->
+              <label class="col-sm-2 control-label text-nowrap" for="name">Last Name:</label>
+              <input type="text" class="form-control" id="last name" name="name" formControlName="lastName" placeholder="Last Name" />
             </div>
             <div class="col-lg-6 col-md-6 col-sm-12">
               <!-- Field for email -->
@@ -94,11 +101,11 @@ add or edit a trainer-->
               </datalist>
             </div>
             <div class="col-lg-6 col-md-6 col-sm-12">
-              <!-- Dropdown for Trainer tier/role -->
-              <label class="col-sm-2 control-label text-nowrap" for="tier">Tier</label>
-              <select class="form-control" formControlName="tier" (ngModelChange)="tierChange($event)" name="tier">
-                <option value="" disabled>Select Tier</option>
-                <option [value]="tier" *ngFor="let tier of tiers">{{tier | displayTier}}</option>
+              <!-- Dropdown for Trainer role/role -->
+              <label class="col-sm-2 control-label text-nowrap" for="role">Role</label>
+              <select class="form-control" formControlName="role" (ngModelChange)="roleChange($event)" name="role">
+                <option value="" disabled>Select role</option>
+                <option [value]="role" *ngFor="let role of roles">{{role}}</option>
               </select>
 
             </div>
@@ -129,10 +136,19 @@ add or edit a trainer-->
         <div class="form-group">
           <div class="row">
             <div class="col-md-6">
-              <!-- Field for Trainer name -->
-              <label class="col-sm-2 control-label text-nowrap" for="name">Trainer Name:</label>
+              <!-- Field for Trainer first name -->
+              <label class="col-sm-2 control-label text-nowrap" for="name">First Name:</label>
               <div class="col-sm-12">
-                <input type="text" class="form-control" id="name" name="name" formControlName="name" placeholder="Name" />
+                <input type="text" class="form-control" id="first name" name="firstName" formControlName="firstName" placeholder="First Name"
+                />
+              </div>
+            </div>
+            <div class="col-md-6">
+              <!-- Field for Trainer last name -->
+              <label class="col-sm-2 control-label text-nowrap" for="name">Last Name:</label>
+              <div class="col-sm-12">
+                <input type="text" class="form-control" id="lastName" name="lastName" formControlName="lastName" placeholder="Last Name"
+                />
               </div>
             </div>
 
@@ -143,6 +159,15 @@ add or edit a trainer-->
                 <input type="text" class="form-control" id="email" name="email" formControlName="email" placeholder="Email" />
               </div>
             </div>
+            
+            <div class="col-md-6">
+              <!-- Field for Trainer password -->
+              <label class="col-sm-2 control-label text-nowrap" for="password">Password:</label>
+              <div class="col-sm-12">
+                <input type="password" class="form-control" id="password" name="password" formControlName="password" placeholder="Password" />
+              </div>
+            </div>
+
           </div>
 
           <div class="row">
@@ -153,7 +178,7 @@ add or edit a trainer-->
               <div class="col-sm-12">
                 <input list="trainerTitle" formControlName="title" type="text" class="form-control" id="title1" name="title" placeholder="Enter Title"
                 />
-                <!-- Dropdown for Trainer tier/role -->
+                <!-- Dropdown for Trainer role/role -->
                 <datalist id="trainerTitle">
                   <option [value]="title" *ngFor="let title of titles">{{title}}</option>
                 </datalist>
@@ -161,11 +186,15 @@ add or edit a trainer-->
             </div>
 
             <div class="col-md-6">
-              <label class="col-sm-2 control-label text-nowrap" for="tier">Tier:</label>
+              <label class="col-sm-2 control-label text-nowrap" for="role">Role:</label>
               <div class="col-sm-12">
-                <select class="form-control" formControlName="tier" (ngModelChange)="newTierChange($event)" name="tier" placeholder="Select Tier">
-                    <option value="" disabled>Select Tier</option>
-                    <option [value]="tier" *ngFor="let tier of tiers">{{tier | displayTier}}</option>
+                  <!-- <select class="form-control" formControlName="role" (ngModelChange)="newroleChange($event)" name="role" required [(ngModel)]="role">
+                      <option value="1">Trainer</option>
+                      <option value="2">Panel</option>
+                    </select> -->
+                <select class="form-control" formControlName="role" (ngModelChange)="newroleChange($event)" name="role" placeholder="Select Role">
+                  <option value="" disabled>Select Role</option>
+                  <option [value]="role" *ngFor="let role of roles">{{role}}</option>
                 </select>
               </div>
             </div>

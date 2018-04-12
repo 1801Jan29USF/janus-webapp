@@ -1,11 +1,11 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { Batch } from '../entities/Batch';
 import { NoteService } from '../services/note.service';
-import { BatchService } from '../services/batch.service';
 import { Subscription } from 'rxjs/Subscription';
 
 // pipes
 import { DisplayBatchByYear } from '../pipes/display-batch-by-year.pipe';
+import { HydraBatch } from '../../../hydra-client/entities/HydraBatch';
+import { HydraBatchService } from '../../../hydra-client/services/batch/hydra-batch.service';
 
 
 @Component({
@@ -17,16 +17,16 @@ import { DisplayBatchByYear } from '../pipes/display-batch-by-year.pipe';
 
 export class QualityComponent implements OnInit, OnDestroy {
 
-  batches: Batch[];
+  batches: HydraBatch[] = [];
 
-  currentBatch: Batch;
+  currentBatch: HydraBatch;
   currentYear: number;
 
   batchSubscription: Subscription;
 
 
   constructor(
-    private batchService: BatchService,
+    private batchService: HydraBatchService,
     private batchesByYearPipe: DisplayBatchByYear
   ) {
     this.setCurrentYear( this.getCalendarYear() );
@@ -35,7 +35,7 @@ export class QualityComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
 
-    this.batchSubscription = this.batchService.getList()
+    this.batchSubscription = this.batchService.fetchAll()
       .subscribe( (batches) => this.setBatches(batches) );
 
     this.batchService.fetchAll();
@@ -50,13 +50,13 @@ export class QualityComponent implements OnInit, OnDestroy {
   *
   * @param batches: Batch[]
   */
-  private setBatches(batches: Batch[]): void {
+  private setBatches(batches: HydraBatch[]): void {
     this.batches = batches;
   }
 
 
   public onYearSelect(year: number) {
-    const currentYearBatches: Batch[] = this.batchesByYearPipe.transform(this.batches, year);
+    const currentYearBatches: HydraBatch[] = this.batchesByYearPipe.transform(this.batches, year);
     this.setCurrentYear(year);
 
     if (currentYearBatches.length > 0) {
@@ -87,7 +87,7 @@ export class QualityComponent implements OnInit, OnDestroy {
     // console.log(currentYear);
   }
 
-  public getBatchesOfCurrentYear(): Batch[] {
+  public getBatchesOfCurrentYear(): HydraBatch[] {
     return this.batchesByYearPipe.transform(this.batches, this.currentYear);
   }
 
@@ -117,26 +117,27 @@ export class QualityComponent implements OnInit, OnDestroy {
   *
   * @return Batch
   */
-  private createBatch(): Batch {
+  private createBatch(): HydraBatch {
 
-    return {
-      batchId: 0,
-      resourceId: 0,
-      trainingName: '',
-      trainer: null,
-      coTrainer: null,
-      skillType: '',
-      trainingType: '',
-      startDate: null,
-      endDate: null,
-      location: '',
-      address: null,
-      goodGradeThreshold: 0,
-      borderlineGradeThreshold: 0,
-      trainees: [],
-      weeks: 1,
-      gradedWeeks: 1,
-    };
+    return new HydraBatch();
+  //   return {
+  //     batchId: 0,
+  //     resourceId: 0,
+  //     trainingName: '',
+  //     trainer: null,
+  //     coTrainer: null,
+  //     skillType: '',
+  //     trainingType: '',
+  //     startDate: null,
+  //     endDate: null,
+  //     location: '',
+  //     address: null,
+  //     goodGradeThreshold: 0,
+  //     borderlineGradeThreshold: 0,
+  //     trainees: [],
+  //     weeks: 1,
+  //     gradedWeeks: 1,
+  //   };
   }
 
 }

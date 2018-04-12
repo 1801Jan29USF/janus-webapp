@@ -1,10 +1,10 @@
 import { Assessment } from './Assessment';
-import { Trainee } from './Trainee';
+import { HydraTrainee } from '../../../hydra-client/entities/HydraTrainee';
 
 export class Grade {
     gradeId: number;
     assessment: Assessment;
-    trainee: Trainee;
+    trainee: HydraTrainee;
     dateReceived: any;
     score: number;
 }

@@ -2,9 +2,9 @@ import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { NgbModal, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
 import { Input } from '@angular/core/';
 import { NgbModalRef } from '@ng-bootstrap/ng-bootstrap/modal/modal-ref';
-import { Trainer } from '../../../entities/Trainer';
-import { TrainerService } from '../../../services/trainer.service';
-import { Subject } from 'rxjs/Subject';
+import { TrainerService } from '../../../../../hydra-client/services/trainer/trainer.service';
+import { setInterval } from 'timers';
+import { HydraTrainer } from '../../../../../hydra-client/entities/HydraTrainer';
 
 
 @Component({
@@ -15,7 +15,7 @@ import { Subject } from 'rxjs/Subject';
 })
 export class DeactivateTrainerComponent implements OnInit {
     @Input()
-    trainer: Trainer;
+    trainer: HydraTrainer;
 
     constructor(private modalService: NgbModal, private ts: TrainerService) {
     }
@@ -38,9 +38,9 @@ export class DeactivateTrainerComponent implements OnInit {
      * @memberof DeactivateTrainerComponent
      */
     deactivateTrainer() {
-        this.trainer.tier = 'ROLE_INACTIVE';
+        this.trainer.role = 'INACTIVE';
         this.ts.update(this.trainer).subscribe((resp) => {
             this.ts.fetchAll();
-          });
+        });
     }
 }

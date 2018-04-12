@@ -2,16 +2,16 @@
 // The build system defaults to the dev environment which uses `environment.ts`, but if you do
 // `ng build --env=prod` then `environment.prod.ts` will be used instead.
 // The list of which env maps to which file can be found in `.angular-cli.json`.
-const context = 'http://localhost:8080/';
+const context = 'http://localhost:8909/';
 const bam = 'http://18.219.59.193:9001/api/v2';
 export const environment = {
   production: false,
 
-  hydraContext: 'https://virtserver.swaggerhub.com/blake2/Hydra/1.0.0/',
+  hydraContext: 'http://10.226.124.149:8765/',
 
   context: context, // change for what the production environment would actually be
   bam: bam,
-  url: 'http://localhost:8085/',
+  url: 'http://localhost:8080/',
 
   assessment: {
     fetchByBatchIdByWeek: (batchId: number, week: number) => `${context}trainer/assessment/${batchId}/${week}`,

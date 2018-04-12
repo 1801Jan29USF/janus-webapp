@@ -5,10 +5,10 @@ import { NgbModal, ModalDismissReasons, NgbActiveModal } from '@ng-bootstrap/ng-
 import { Subscription } from 'rxjs/Subscription';
 
 // entities
-import { Batch } from '../../entities/Batch';
+import { HydraBatch } from '../../../../hydra-client/entities/HydraBatch';
 
 // services
-import { BatchService } from '../../services/batch.service';
+import { HydraBatchService } from '../../../../hydra-client/services/batch/hydra-batch.service';
 import { TrainingTypeService } from '../../services/training-type.service';
 import { SkillService } from '../../services/skill.service';
 import { LocationService } from '../../services/location.service';
@@ -26,10 +26,10 @@ import { ApiService } from '../../services/api.service';
 export class BatchModalComponent implements OnInit, OnDestroy, OnChanges {
 
   @Input()
-  public initialBatch: Batch;
+  public initialBatch: HydraBatch;
 
   @Input()
-  public batch: Batch;
+  public batch: HydraBatch;
 
   public trainers: Trainer[];
   public skills: string[];
@@ -49,13 +49,13 @@ export class BatchModalComponent implements OnInit, OnDestroy, OnChanges {
 
   constructor(
     private activeModal: NgbActiveModal,
-    private batchService: BatchService,
+    private batchService: HydraBatchService,
     private trainingTypeService: TrainingTypeService,
     private skillService: SkillService,
     private locationService: LocationService,
     public trainerService: TrainerService
   ) {
-    this.batch = new Batch();
+    this.batch = new HydraBatch();
     this.setLocations([]);
     this.setTrainers([]);
     this.setTrainingTypes([]);
@@ -108,16 +108,9 @@ export class BatchModalComponent implements OnInit, OnDestroy, OnChanges {
   onLocationSelect(addressId: number): void {
     for (const location of this.locations) {
       if (Number(location.addressId) === Number(addressId)) {
-        this.batch.address = location;
+        this.batch.location = location.city;
       }
     }
-    /** Create batch also requires a "location" field inside of it
-     *  For now, we will just send a string for the city since the address
-     * is already set
-     *
-     * The address/location entities need to be redesigned across the application
-     */
-    this.batch.location = this.batch.address.city;
   }
 
   /** Dynamically updates the createBatch trainer selected inside the
@@ -126,7 +119,7 @@ export class BatchModalComponent implements OnInit, OnDestroy, OnChanges {
   onTrainerSelect(trainerId: number): void {
     for (const trainer of this.trainers) {
       if (Number(trainer.trainerId) === Number(trainerId)) {
-        this.batch.trainer = trainer;
+        this.batch.trainer = trainer.trainerId;
       }
     }
   }
@@ -138,7 +131,7 @@ export class BatchModalComponent implements OnInit, OnDestroy, OnChanges {
   onCoTrainerSelect(trainerId: number): void {
     for (const trainer of this.trainers) {
       if (Number(trainer.trainerId) === Number(trainerId)) {
-        this.batch.coTrainer = trainer;
+        this.batch.cotrainer = trainer.trainerId;
       }
     }
   }
@@ -180,7 +173,7 @@ export class BatchModalComponent implements OnInit, OnDestroy, OnChanges {
     isNewBatch is assigned so that the proper functions are called from the buttons
     This should be redesigned */
 
-    if (this.batch.trainer == null) {
+    if (this.batch.trainer === 0) {
       this.batchType = 'Create New Batch';
       this.isNewBatch = true;
     } else {

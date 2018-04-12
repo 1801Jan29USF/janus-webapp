@@ -166,7 +166,7 @@ export class TrainerService implements CRUD<Trainer> {
   public createTrainer(name: string, title: string, email: string, tier: string): void {
     const trainer = new Trainer();
 
-    trainer.name = name;
+    trainer.firstName = name;
     trainer.title = title;
     trainer.email = email;
     trainer.tier = tier;

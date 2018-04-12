@@ -1,12 +1,13 @@
 import { Pipe, PipeTransform } from '@angular/core';
-import { Trainee } from '../entities/Trainee';
+import { HydraTrainee } from '../../../hydra-client/entities/HydraTrainee';
+
 
 @Pipe({
   name: 'traineeSearchPipe'
 })
 export class TraineeSearch implements PipeTransform {
 
-  transform(trainees: any, searchText: String): Trainee[] {
+  transform(trainees: any, searchText: String): HydraTrainee[] {
     if (!trainees) {
       return [];
     } else {
